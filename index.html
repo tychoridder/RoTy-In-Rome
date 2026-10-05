@@ -1,0 +1,427 @@
+<!doctype html><html lang="nl"><head><meta charset="utf-8"><title>Rome 10–17 oktober</title><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..800;1,6..96,400..600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400..650&display=swap">
+<style>
+/* Layout: één smalle kolom als reisboekje; sticky dagenbalk; per dag een tijdlijn met tijden in een vaste linkerkolom. */
+:root {
+  --paper: #F1F2EC;      /* travertijn met een vleugje pijnboomgroen */
+  --card: #F9FAF6;
+  --ink: #1B2420;
+  --muted: #5B655F;
+  --rule: #D3D7CC;
+  --pine: #2E4E3C;       /* parasoldennen */
+  --ochre: #A87A22;      /* giallo romano */
+  --pompei: #9A2F26;     /* Pompejaans rood: boeken / let op */
+  --pompei-bg: #F4E4E0;
+  --ochre-bg: #F3EAD6;
+  --pine-bg: #E1EAE3;
+  --display: "Bodoni Moda", "Didot", "Bodoni 72", Georgia, serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #121815; --card: #19211D; --ink: #E6E8E0; --muted: #9AA39D; --rule: #2B3530;
+    --pine: #93BCA0; --ochre: #D8AE5E; --pompei: #E6847A;
+    --pompei-bg: #3A1F1C; --ochre-bg: #33291A; --pine-bg: #1D2D24;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #121815; --card: #19211D; --ink: #E6E8E0; --muted: #9AA39D; --rule: #2B3530;
+  --pine: #93BCA0; --ochre: #D8AE5E; --pompei: #E6847A;
+  --pompei-bg: #3A1F1C; --ochre-bg: #33291A; --pine-bg: #1D2D24;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--body); font-size: 16px; line-height: 1.55;
+  padding-inline: 16px; padding-block: 0 48px;
+}
+.wrap { max-width: 760px; margin: 0 auto; }
+a { color: var(--pine); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; border-radius: 4px; }
+
+/* Kop */
+header.top { padding-block: 40px 20px; display: grid; gap: 12px; }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
+h1 { font-family: var(--display); font-weight: 500; font-size: clamp(2.4rem, 8vw, 3.6rem); line-height: 1.02; margin: 0; letter-spacing: -.01em; text-wrap: balance; }
+h1 em { font-style: italic; color: var(--ochre); font-weight: 400; }
+.lead { margin: 0; max-width: 62ch; font-size: 1.05rem; }
+.assume { margin: 0; color: var(--muted); font-size: .92rem; max-width: 62ch; }
+
+/* Dagenbalk */
+nav.days {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-block: 1px solid var(--rule);
+  margin-inline: -16px; padding-inline: 16px;
+}
+.days-inner { max-width: 760px; margin: 0 auto; display: flex; gap: 4px; overflow-x: auto; padding-block: 8px; scrollbar-width: none; }
+.days-inner::-webkit-scrollbar { display: none; }
+.days-inner a {
+  flex: 0 0 auto; text-decoration: none; color: var(--ink);
+  display: grid; justify-items: center; gap: 0; padding: 4px 10px; border-radius: 8px; min-width: 48px;
+}
+.days-inner a:hover { background: var(--card); }
+.days-inner .d { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.days-inner .n { font-family: var(--display); font-size: 1.25rem; line-height: 1.1; font-variant-numeric: lining-nums; }
+.days-inner a.aux .n { font-family: var(--body); font-size: .85rem; font-weight: 600; line-height: 1.7; }
+
+/* Secties */
+section { scroll-margin-top: 76px; padding-block: 36px 8px; }
+h2 { font-family: var(--display); font-weight: 500; font-size: 1.9rem; line-height: 1.1; margin: 0 0 6px; text-wrap: balance; }
+.sec-intro { margin: 0 0 18px; color: var(--muted); max-width: 62ch; }
+
+/* Weekoverzicht */
+.week { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.week li { border-bottom: 1px solid var(--rule); }
+.week a { display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 14px; padding-block: 12px; color: inherit; text-decoration: none; }
+.week a:hover .w-theme { color: var(--pine); }
+.w-date { display: grid; align-content: start; }
+.w-date .d { font-family: var(--mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.w-date .n { font-family: var(--display); font-size: 1.9rem; line-height: 1; font-variant-numeric: lining-nums; }
+.w-theme { font-weight: 600; transition: color .15s; }
+.w-hl { color: var(--muted); font-size: .93rem; }
+.w-fix { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+/* Tags */
+.tag { display: inline-flex; align-items: center; gap: 4px; font-family: var(--mono); font-size: 11.5px; line-height: 1; padding: 5px 8px; border-radius: 999px; white-space: nowrap; }
+.tag.book { background: var(--pompei-bg); color: var(--pompei); }
+.tag.ticket { border: 1px solid var(--rule); color: var(--muted); }
+.tag.opt { background: var(--ochre-bg); color: var(--ochre); }
+.tag.free { background: var(--pine-bg); color: var(--pine); }
+
+/* Boeken */
+.book-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.bk { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 10px; padding: 14px; background: var(--card); border: 1px solid var(--rule); border-radius: 10px; }
+.bk input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--pine); cursor: pointer; }
+.bk-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 10px; }
+.bk-title { font-weight: 600; }
+.bk-when { font-family: var(--mono); font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bk-note { margin: 4px 0 6px; font-size: .94rem; }
+.bk-foot { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: .9rem; }
+.bk.done { opacity: .6; }
+.bk.done .bk-title { text-decoration: line-through; text-decoration-thickness: 1px; }
+.urg { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 7px; border-radius: 4px; }
+.urg.now { background: var(--pompei); color: var(--paper); }
+.urg.week { background: var(--ochre-bg); color: var(--ochre); }
+.urg.site { border: 1px solid var(--rule); color: var(--muted); }
+.local-note { font-size: .82rem; color: var(--muted); margin: 10px 0 0; }
+
+/* Dag */
+.day-head { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 16px; align-items: end; padding-bottom: 14px; border-bottom: 2px solid var(--ink); }
+.big { font-family: var(--display); font-weight: 400; font-size: clamp(4rem, 16vw, 5.5rem); line-height: .8; font-variant-numeric: lining-nums; letter-spacing: -.02em; }
+.day-meta { display: grid; gap: 2px; min-width: 0; }
+.it { font-family: var(--display); font-style: italic; color: var(--ochre); font-size: 1.1rem; }
+.day-meta h2 { margin: 0; }
+.area { font-size: .92rem; color: var(--muted); }
+.area .sun { font-family: var(--mono); font-size: 12px; white-space: nowrap; }
+.notes { display: grid; gap: 6px; margin: 14px 0 4px; padding: 0; list-style: none; }
+.notes li { font-size: .92rem; padding-left: 14px; position: relative; }
+.notes li::before { content: ""; position: absolute; left: 0; top: .55em; width: 6px; height: 6px; background: var(--pompei); transform: rotate(45deg); }
+.tl { list-style: none; margin: 8px 0 0; padding: 0; }
+.tl > li { display: grid; grid-template-columns: 64px minmax(0,1fr); gap: 14px; padding-block: 14px; border-bottom: 1px solid var(--rule); }
+.tl > li:last-child { border-bottom: 0; }
+.time { font-family: var(--mono); font-size: 13.5px; font-variant-numeric: tabular-nums; color: var(--ink); padding-top: 2px; }
+.tl .opt .time, .tl .opt .t-title { color: var(--muted); }
+.t-title { font-weight: 600; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
+.t-text { margin: 3px 0 0; font-size: .95rem; max-width: 60ch; }
+.t-foot { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-top: 8px; }
+.map { font-size: .85rem; }
+
+/* Tips */
+.tips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 18px 28px; }
+.tip h3 { font-size: .8rem; font-family: var(--mono); font-weight: 500; letter-spacing: .1em; text-transform: uppercase; margin: 0 0 4px; color: var(--pine); }
+.tip p { margin: 0; font-size: .95rem; }
+.sources { font-size: .86rem; color: var(--muted); padding-left: 18px; margin: 0; display: grid; gap: 4px; }
+footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: .85rem; color: var(--muted); }
+
+@media (max-width: 480px) {
+  .tl > li, .week a { grid-template-columns: 52px minmax(0,1fr); gap: 10px; }
+  .time { font-size: 12.5px; }
+  h2 { font-size: 1.6rem; }
+}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Roma · 10–17 ottobre 2026</div>
+    <h1>Rome, <em>zes hele dagen</em></h1>
+    <p class="lead">Per dag één deel van de stad, afgestemd op de sluitingsdagen en openingstijden van oktober 2026. Vaste tijdsloten staan in rood; alles in oker is optioneel.</p>
+    <p class="assume">Uitgangspunt: aankomst zaterdagmiddag 10 oktober, vertrek zaterdag 17 oktober, hotel in het centrum. Openingstijden gecontroleerd op 5 oktober 2026.</p>
+  </header>
+</div>
+
+<nav class="days" aria-label="Dagen">
+  <div class="days-inner" id="daynav"></div>
+</nav>
+
+<div class="wrap">
+  <section id="week" aria-labelledby="week-h">
+    <h2 id="week-h">De week in één oogopslag</h2>
+    <p class="sec-intro">Tik op een dag voor het uurschema.</p>
+    <ul class="week" id="weeklist"></ul>
+  </section>
+
+  <section id="boeken" aria-labelledby="boek-h">
+    <h2 id="boek-h">Nu reserveren</h2>
+    <p class="sec-intro">Colosseum-tickets gaan 30 dagen vooraf in de verkoop, dus voor jullie data loopt de verkoop al. Boek de eerste drie vandaag.</p>
+    <ul class="book-list" id="booklist"></ul>
+    <p class="local-note">Afvinken wordt alleen op dit toestel onthouden.</p>
+  </section>
+
+  <div id="days"></div>
+
+  <section id="tips" aria-labelledby="tips-h">
+    <h2 id="tips-h">Praktisch</h2>
+    <div class="tips" id="tiplist"></div>
+  </section>
+
+  <section id="bronnen" aria-labelledby="bron-h">
+    <h2 id="bron-h" style="font-size:1.3rem">Bronnen</h2>
+    <ul class="sources" id="sourcelist"></ul>
+  </section>
+
+  <footer>Opgesteld op 5 oktober 2026. Openingstijden en prijzen kunnen kort van tevoren wijzigen; check bij twijfel de officiële site van het museum.</footer>
+</div>
+
+<script>
+var gm = function (q) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q + ", Roma"); };
+
+var DAYS = [
+  { id: "za10", ab: "Za", n: "10", it: "sabato", theme: "Aankomst & Rome bij avond", area: "Navona · Pantheon · Trevi", sun: "18:38",
+    hl: "Aankomst · Piazza Navona · Pantheon van buiten · Trevi bij nacht", fix: [],
+    notes: ["Laat geland? Sla de wandeling over en ga direct voor diner en Trevi."],
+    items: [
+      { t: "Middag", title: "Aankomst en inchecken", text: "Vanaf Fiumicino met de Leonardo Express naar Termini (€14, ±32 min), daarna metro of taxi naar het hotel." },
+      { t: "18:00", title: "Piazza Navona", text: "Eerste kennismaking: Bernini's Vierstromenfontein en de gevel van Sant'Agnese in Agone. Zon onder om 18:38.", map: "Piazza Navona" },
+      { t: "18:45", title: "Pantheon van buiten", text: "Via Piazza Sant'Eustachio naar Piazza della Rotonda. Naar binnen gaan jullie woensdagochtend.", map: "Piazza della Rotonda" },
+      { t: "20:00", title: "Diner", text: "Rond Campo de' Fiori of Via del Governo Vecchio. Romeinen eten laat; op zaterdag is reserveren verstandig." },
+      { t: "22:15", title: "Trevifontein bij nacht", text: "Na 22:00 is de rand van het bassin weer vrij toegankelijk zonder het ticket van €2, en veel rustiger. Muntje over je schouder.", map: "Fontana di Trevi", tags: [["free", "na 22:00 gratis"]] }
+    ] },
+  { id: "zo11", ab: "Zo", n: "11", it: "domenica", theme: "Trastevere, Gianicolo & Aventijn", area: "Porta Portese · Trastevere · Gianicolo · Aventijn", sun: "18:36",
+    hl: "Vlooienmarkt · Trastevere · kanonschot 12:00 op de Gianicolo · sleutelgat op de Aventijn", fix: [["opt", "Falstaff 19:00"]],
+    notes: ["Vaticaanse Musea dicht (alleen de laatste zondag van de maand open)", "Mercato di Testaccio dicht op zondag"],
+    items: [
+      { t: "08:30", title: "Porta Portese", text: "De grote zondagse vlooienmarkt: antiek, vintage en veel rommel. Vroeg is het leukst. Let op je spullen.", map: "Porta Portese" },
+      { t: "10:00", title: "Trastevere", text: "Santa Maria in Trastevere met de gouden 12e-eeuwse mozaïeken, dan de steegjes rond Via della Lungaretta en Santa Cecilia in Trastevere. Het is zondag: tijdens de mis even wachten of stil achterin kijken.", map: "Santa Maria in Trastevere" },
+      { t: "11:30", title: "Gianicolo", text: "Klim via Via Garibaldi langs de Fontana dell'Acqua Paola naar het terras. Om 12:00 klinkt onder het terras het dagelijkse kanonschot. Het mooiste uitzicht over alle koepels van de stad.", map: "Terrazza del Gianicolo" },
+      { t: "13:00", title: "Lunch in Trastevere", text: "Supplì vooraf, cacio e pepe als hoofdgerecht." },
+      { t: "15:00", title: "Bocca della Verità", text: "Over de Ponte Palatino naar Santa Maria in Cosmedin. 's Middags is de rij korter.", map: "Bocca della Verità" },
+      { t: "15:45", title: "Aventijn", text: "Langs het Circo Massimo omhoog naar de Giardino degli Aranci (sinaasappeltuin met uitzicht), Santa Sabina en het sleutelgat op de Piazza dei Cavalieri di Malta, met de koepel van Sint-Pieter precies in beeld.", map: "Giardino degli Aranci" },
+      { t: "17:00", opt: true, title: "Centrale Montemartini", text: "Klassieke beelden tussen de dieselmotoren en turbines van Rome's eerste elektriciteitscentrale. Metro B vanaf Piramide naar Garbatella. Koop hier het combiticket met de Capitolijnse Musea (7 dagen geldig), dan is maandag al betaald. Check de sluitingstijd.", map: "Centrale Montemartini", tags: [["ticket", "combi €15,50"], ["opt", "optie"]] },
+      { t: "19:00", opt: true, title: "Falstaff, première", text: "Verdi's laatste opera in het Teatro dell'Opera, gedirigeerd door Michele Mariotti met Luca Salsi als Falstaff. Premièreavond: duurder en het snelst uitverkocht. Donderdag 18:00 past beter.", map: "Teatro dell'Opera di Roma", tags: [["opt", "optie"]] },
+      { t: "20:00", title: "Diner in Testaccio", text: "De wijk van de Romeinse klassiekers: carbonara, amatriciana, coda alla vaccinara." }
+    ] },
+  { id: "ma12", ab: "Ma", n: "12", it: "lunedì", theme: "Antiek Rome", area: "Colosseum · Forum · Palatijn · Capitool", sun: "18:34",
+    hl: "Colosseum (ondergronds + arena) · Forum · Palatijn · lunch in Monti · Capitolijnse Musea", fix: [["book", "Colosseum 08:30"]],
+    notes: ["Dicht op maandag: Galleria Borghese, Castel Sant'Angelo en de meeste staatsmusea", "Op de Palatijn is het Huis van Augustus maandag dicht", "Colosseum-tickets staan op naam: paspoort of ID mee"],
+    items: [
+      { t: "08:30", title: "Colosseum", text: "Het eerste tijdslot is het rustigst. Met de Full Experience kom je in de ondergrondse gangen en op de arenavloer. Reken op 1,5 uur. De officiële MyColosseum-app heeft een gratis audiotour.", map: "Colosseo", tags: [["book", "geboekt slot"], ["ticket", "≈ €24 p.p."]] },
+      { t: "10:30", title: "Forum Romanum", text: "Via Sacra, Curia Iulia, de tempel van Vesta en Santa Maria Antiqua met vroegmiddeleeuwse fresco's (zit in de Full Experience).", map: "Foro Romano" },
+      { t: "12:00", title: "Palatijn", text: "De keizerspaleizen, de Domus Tiberiana en vanaf de Farnesiaanse tuinen het uitzicht over het Forum.", map: "Palatino" },
+      { t: "13:30", title: "Lunch in Monti", text: "Levendige wijk achter de keizerfora, rond Piazza della Madonna dei Monti en Via del Boschetto." },
+      { t: "15:00", title: "Keizerfora & Trajanuszuil", text: "Te voet langs Via dei Fori Imperiali naar de Trajanusmarkt en -zuil, dan de Cordonata op naar Michelangelo's Piazza del Campidoglio.", map: "Colonna Traiana" },
+      { t: "15:45", title: "Capitolijnse Musea", text: "Het originele ruiterstandbeeld van Marcus Aurelius, de Capitolijnse wolvin en de Stervende Galliër. De gang door het Tabularium geeft het mooiste zicht over het Forum. Dagelijks open.", map: "Musei Capitolini", tags: [["ticket", "combi €15,50"]] },
+      { t: "18:15", title: "Zonsondergang boven het Forum", text: "Het gratis uitkijkpunt aan de achterkant van het Capitool kijkt recht over het Forum. Zon onder om 18:34.", map: "Terrazza sul Foro Romano, Campidoglio", tags: [["free", "gratis"]] },
+      { t: "20:00", title: "Diner in Monti", text: "Daarna langs de verlichte keizerfora terug." }
+    ] },
+  { id: "di13", ab: "Di", n: "13", it: "martedì", theme: "Vaticaan & Engelenburcht", area: "Vaticaan · Borgo · Ponte Sant'Angelo · Navona", sun: "18:33",
+    hl: "Vaticaanse Musea · Sixtijnse Kapel · Sint-Pieter en koepel · Castel Sant'Angelo", fix: [["book", "Vaticaan 08:00"], ["opt", "Falstaff 20:00"]],
+    notes: ["Schouders en knieën bedekt, anders kom je Sint-Pieter en de Sixtijnse Kapel niet in", "In de Sixtijnse Kapel zijn foto's verboden", "De basiliek is gratis; reken op een rij bij de security"],
+    items: [
+      { t: "07:45", title: "Bij de ingang", text: "Viale Vaticano, 10 minuten lopen vanaf metro Ottaviano (lijn A). Ruim voor het tijdslot aanwezig zijn.", map: "Musei Vaticani, Viale Vaticano" },
+      { t: "08:00", title: "Vaticaanse Musea & Sixtijnse Kapel", text: "Route: Pio-Clementino (Laocoön, Apollo van Belvedere), Galerij van de Landkaarten, Stanze di Raffaello (School van Athene) en als laatste de Sixtijnse Kapel. Reken op 3 tot 3,5 uur.", tags: [["book", "geboekt slot"], ["ticket", "€25 p.p. online"]] },
+      { t: "11:30", title: "Sint-Pietersbasiliek", text: "Michelangelo's Pietà en Bernini's baldakijn. Vanaf de uitgang van de musea loop je buitenom naar het plein, ±15 minuten.", map: "Basilica di San Pietro" },
+      { t: "12:45", title: "Koepel beklimmen", text: "551 treden, of met de lift naar het dak en daarna nog ±320 treden. Smal en steil, maar het uitzicht over het plein is het waard. Kaartjes ter plekke.", tags: [["ticket", "ter plekke"]] },
+      { t: "14:00", title: "Lunch in Borgo of Prati", text: "Een paar straten van het plein af eet je beter en goedkoper, richting Via Cola di Rienzo." },
+      { t: "15:30", title: "Castel Sant'Angelo", text: "Het mausoleum van keizer Hadrianus, later pauselijke burcht. Bovenop het Engelenterras met uitzicht over de Tiber. Reken op 1,5 uur.", map: "Castel Sant'Angelo", tags: [["ticket", "€18 p.p."]] },
+      { t: "17:30", title: "Ponte Sant'Angelo & Via dei Coronari", text: "Over de brug met Bernini's engelen, door het antiekstraatje naar Piazza Navona voor de zonsondergang (18:33).", map: "Via dei Coronari" },
+      { t: "20:00", opt: true, title: "Falstaff of diner bij Navona", text: "Falstaff begint om 20:00 in het Teatro dell'Opera. Na de lange Vaticaandag is een rustig diner rond Via del Governo Vecchio ook een prima keuze.", tags: [["opt", "optie"]] }
+    ] },
+  { id: "wo14", ab: "Wo", n: "14", it: "mercoledì", theme: "Historisch centrum", area: "Trevi · Pantheon · Navona · Joods Getto", sun: "18:31",
+    hl: "Trevi vroeg · Pantheon · Caravaggio's · Campo de' Fiori · Joods Getto", fix: [],
+    notes: ["Woensdag is de pauselijke audiëntie op het Sint-Pietersplein; Sint-Pieter is dan 's ochtends dicht. Daarom het Vaticaan op dinsdag", "Kerken sluiten vaak tussen ±12:30 en 15:00"],
+    items: [
+      { t: "08:00", title: "Trevifontein", text: "Vóór 09:00 heb je geen ticket nodig voor de rand van het bassin en is het er nog bijna leeg. Tussen 9 en 22 uur kost dat stuk €2; vanaf het plein kijken blijft altijd gratis.", map: "Fontana di Trevi", tags: [["free", "vóór 9:00 gratis"]] },
+      { t: "08:30", title: "Koffie aan de bar", text: "Staand aan de bar betaal je een fractie van de prijs aan tafel." },
+      { t: "09:00", title: "Pantheon", text: "Meteen bij opening. De koepel van 43 meter doorsnee is van ongewapend beton, na bijna 1900 jaar nog steeds de grootste in zijn soort. Open 9 tot 19 uur.", map: "Pantheon", tags: [["ticket", "€7 p.p."]] },
+      { t: "10:00", title: "Sant'Ignazio & Piazza di Pietra", text: "In Sant'Ignazio is de koepel geschilderd: zoek de markering op de vloer en kijk omhoog. Om de hoek staan de zuilen van de tempel van Hadrianus.", map: "Sant'Ignazio di Loyola" },
+      { t: "10:45", title: "San Luigi dei Francesi", text: "Drie doeken van Caravaggio over de heilige Matteüs, gratis te zien.", map: "San Luigi dei Francesi" },
+      { t: "11:30", title: "Piazza Navona bij daglicht", text: "Nu met tijd voor de Vierstromenfontein en een kijkje in Sant'Agnese in Agone.", map: "Piazza Navona" },
+      { t: "12:15", title: "Campo de' Fiori & lunch", text: "Ochtendmarkt (ma–za), daarna lunch in de buurt.", map: "Campo de' Fiori" },
+      { t: "14:30", title: "Via Giulia & Joods Getto", text: "De renaissancestraat Via Giulia, dan de Portico d'Ottavia, het Theater van Marcellus en de Schildpaddenfontein.", map: "Portico d'Ottavia" },
+      { t: "16:00", title: "Largo di Torre Argentina", text: "Vier tempels uit de Republiek en de plek waar Caesar werd vermoord. Tussen de ruïnes woont een kolonie katten.", map: "Largo di Torre Argentina" },
+      { t: "16:45", opt: true, title: "Galleria Doria Pamphilj", text: "Privépaleis met Velázquez' portret van paus Innocentius X en werk van Caravaggio. Check de openingstijden.", map: "Galleria Doria Pamphilj", tags: [["opt", "optie"]] },
+      { t: "19:30", title: "Diner in het Getto", text: "Joods-Romeinse keuken: gefrituurde courgettebloemen en filetti di baccalà." }
+    ] },
+  { id: "do15", ab: "Do", n: "15", it: "giovedì", theme: "Borghese, Pincio & Spaanse Trappen", area: "Villa Borghese · Piazza del Popolo · Spagna", sun: "18:29",
+    hl: "Galleria Borghese · Villa Borghese · Pincio · Spaanse Trappen · Bernini's Teresa", fix: [["book", "Borghese 09:00"], ["opt", "Falstaff 18:00"]],
+    notes: ["Galleria Borghese: precies 2 uur binnen en geen kaartverkoop aan de deur", "Op de Spaanse Trappen zitten is verboden; er staat een boete op"],
+    items: [
+      { t: "08:30", title: "Naar de Galleria Borghese", text: "Een half uur voor het slot aanwezig zijn; tassen gaan naar de garderobe.", map: "Galleria Borghese" },
+      { t: "09:00", title: "Galleria Borghese", text: "Bernini's Apollo en Daphne en de Ontvoering van Proserpina, zes Caravaggio's en Canova's Paolina Borghese. Is het beneden druk, begin dan boven in de schilderijengalerij.", tags: [["book", "geboekt slot"], ["ticket", "≈ €18 p.p."]] },
+      { t: "11:15", title: "Villa Borghese", text: "Wandelen door het park, of een roeibootje op het meertje bij de Tempel van Asclepius.", map: "Laghetto di Villa Borghese" },
+      { t: "12:15", title: "Pincio & Piazza del Popolo", text: "Vanaf het Pincio-terras kijk je over de piazza naar Sint-Pieter. Beneden hangen in Santa Maria del Popolo twee Caravaggio's in de Cerasi-kapel.", map: "Santa Maria del Popolo" },
+      { t: "13:15", title: "Lunch", text: "Rond Via di Ripetta of Via della Croce." },
+      { t: "14:45", title: "Via Margutta & Spaanse Trappen", text: "Door de kunstenaarsstraat Via Margutta en Via del Babuino naar de Spaanse Trappen en Trinità dei Monti, dan de winkelstraat Via Condotti.", map: "Piazza di Spagna" },
+      { t: "16:15", title: "Santa Maria della Vittoria", text: "Bernini's Extase van de heilige Teresa. Vijf minuten lopen van het operagebouw.", map: "Santa Maria della Vittoria" },
+      { t: "18:00", opt: true, title: "Falstaff", text: "De vroege voorstelling in het Teatro dell'Opera, zodat er na afloop nog tijd is voor een laat diner. Liever geen opera: aperitivo op een dakterras.", map: "Teatro dell'Opera di Roma", tags: [["opt", "advies als je gaat"]] }
+    ] },
+  { id: "vr16", ab: "Vr", n: "16", it: "venerdì", theme: "Domus Aurea, Caracalla & Via Appia", area: "Colle Oppio · Terme di Caracalla · Appia Antica", sun: "18:28",
+    hl: "Nero's Domus Aurea · thermen van Caracalla · fietsen over de Via Appia · catacomben · aquaducten", fix: [["book", "Domus Aurea 09:00"]],
+    notes: ["De Domus Aurea is alleen vrijdag t/m zondag open", "Vrijdag is in Italië een geliefde stakingsdag voor het OV: check vooraf, en anders taxi"],
+    items: [
+      { t: "09:00", title: "Domus Aurea", text: "Nero's Gouden Huis onder de Colle Oppio, vlak bij het Colosseum. Bezoek met een vaste starttijd. Het is er koel, neem een vest mee.", map: "Domus Aurea", tags: [["book", "geboekt slot"]] },
+      { t: "11:00", title: "Terme di Caracalla", text: "De keizerlijke thermen. De bakstenen muren staan nog tientallen meters hoog en een deel van de mozaïekvloeren ligt er nog. Taxi of metro B naar Circo Massimo.", map: "Terme di Caracalla" },
+      { t: "12:30", title: "Naar de Via Appia Antica", text: "Taxi of bus 118 naar het infopunt van het park en daar (elektrische) fietsen huren. Lunch langs de weg.", map: "Appia Antica punto informativo" },
+      { t: "14:00", title: "Catacomben", text: "San Callisto of San Sebastiano, alleen met rondleiding van ±40 minuten.", map: "Catacombe di San Callisto" },
+      { t: "15:00", title: "Fietsen over de Romeinse weg", text: "Origineel plaveisel, het graf van Caecilia Metella en de Villa dei Quintili. Na Caecilia Metella wordt het het mooist en het stilst.", map: "Mausoleo di Cecilia Metella" },
+      { t: "17:45", opt: true, title: "Parco degli Acquedotti", text: "Romeinse aquaducten dwars door een grasvlakte, op hun mooist rond zonsondergang (18:28). Metro A Giulio Agricola terug naar het centrum.", map: "Parco degli Acquedotti", tags: [["opt", "optie"]] },
+      { t: "20:30", title: "Afscheidsdiner", text: "Trastevere of Testaccio, daarna een laatste rondje langs het verlichte Pantheon." },
+      { t: "Of", opt: true, title: "Alternatief: Ostia Antica", text: "Liever één grote opgraving in plaats van de Appia? Ostia Antica is een complete Romeinse havenstad. Trein vanaf Piramide, ±30 minuten. Op maandag dicht.", map: "Ostia Antica scavi", tags: [["opt", "alternatief"]] }
+    ] },
+  { id: "za17", ab: "Za", n: "17", it: "sabato", theme: "Vertrek", area: "Centrum · Termini · Fiumicino", sun: "18:26",
+    hl: "Markt · laatste gelato · naar Fiumicino", fix: [],
+    notes: [],
+    items: [
+      { t: "Ochtend", title: "Laatste rondje", text: "Afhankelijk van de vlucht: de markt op Campo de' Fiori, of iets wat is blijven liggen. Laatste gelato." },
+      { t: "Vertrek", title: "Naar Fiumicino", text: "Leonardo Express vanaf Termini (€14, ±32 min). Plan ruim: op zaterdag zijn trein en security vaak druk." }
+    ] }
+];
+
+var BOOK = [
+  { id: "colosseo", urg: ["now", "Vandaag"], title: "Colosseum, Forum & Palatijn", when: "ma 12 okt · 08:30 · Full Experience Underground & Arena", note: "Verkoop opent 30 dagen vooraf, dus jullie datum is al in de verkoop. Vroege slots en de Full Experience gaan het snelst. Tickets staan op naam. Is de Full Experience op: neem het standaardticket (Colosseum, Forum en Palatijn, 24 uur geldig).", price: "≈ €24 p.p.", url: "https://ticketing.colosseo.it/en/", site: "ticketing.colosseo.it" },
+  { id: "vaticano", urg: ["now", "Vandaag"], title: "Vaticaanse Musea & Sixtijnse Kapel", when: "di 13 okt · 08:00", note: "€20 plus €5 reserveringskosten. Alleen via de officiële site; doorverkopers vragen veel meer.", price: "€25 p.p.", url: "https://tickets.museivaticani.va", site: "tickets.museivaticani.va" },
+  { id: "borghese", urg: ["now", "Vandaag"], title: "Galleria Borghese", when: "do 15 okt · 09:00", note: "Vijf tijdslots per dag van precies 2 uur. Zonder reservering kom je niet binnen. Koop alleen via het officiële kanaal dat de museumsite noemt.", price: "≈ €18 p.p.", url: "https://galleriaborghese.cultura.gov.it/", site: "galleriaborghese.cultura.gov.it" },
+  { id: "domus", urg: ["week", "Deze week"], title: "Domus Aurea", when: "vr 16 okt · ±09:00", note: "Alleen vrijdag, zaterdag en zondag, met vaste starttijden. Zelfde ticketsite als het Colosseum.", price: "", url: "https://ticketing.colosseo.it/en/", site: "ticketing.colosseo.it" },
+  { id: "falstaff", urg: ["week", "Optioneel"], title: "Falstaff (Verdi), Teatro dell'Opera", when: "zo 11 · 19:00  /  di 13 · 20:00  /  do 15 · 18:00", note: "Donderdag 18:00 past het best in het schema. Tickets via de site van de opera.", price: "", url: "https://www.operaroma.it/spettacoli/falstaff", site: "operaroma.it" },
+  { id: "castel", urg: ["site", "Ter plekke kan"], title: "Castel Sant'Angelo", when: "di 13 okt · ±15:30", note: "Vooraf boeken scheelt een rij, maar is in oktober meestal niet nodig.", price: "€18 p.p.", url: "https://direzionemuseiroma.cultura.gov.it/museo-nazionale-di-castel-santangelo/", site: "direzionemuseiroma.cultura.gov.it" },
+  { id: "pantheon", urg: ["site", "Ter plekke kan"], title: "Pantheon", when: "wo 14 okt · 09:00", note: "Om 09:00 is de rij kort. Online kan via het Musei Italiani-portaal.", price: "€7 p.p.", url: "https://museiitaliani.it", site: "museiitaliani.it" }
+];
+
+var TIPS = [
+  ["Vervoer", "Het centrum is goed te lopen. Voor metro, bus en tram: tik met je bankpas of telefoon bij het poortje; een rit (BIT, 100 minuten) kost €1,50 en je betaalt nooit meer dan €8,50 per dag. Een verhoging naar €2 is aangekondigd, dus kijk bij de automaat."],
+  ["Kleding", "Schouders en knieën bedekt voor het Vaticaan, Sint-Pieter en eigenlijk alle kerken. Een sjaal in de tas lost het meeste op. Goede schoenen: kinderkopjes en veel trappen."],
+  ["Weer half oktober", "Overdag meestal rond de 20–23 °C, 's avonds rond de 13 °C. Een bui is goed mogelijk, dus een klein regenjack mee. Zon onder rond half zeven."],
+  ["Water", "Overal staan nasoni, kleine drinkfonteintjes met goed drinkwater. Een hervulbare fles bespaart veel geld."],
+  ["Eten", "Lunch tussen 13:00 en 14:30, diner vanaf 19:30. Coperto (couvert) op de rekening is normaal. Restaurants met fotomenu's naast de grote trekpleisters kun je overslaan."],
+  ["Zakkenrollers", "Vooral in metrolijn A, bus 40 en 64, rond Termini en bij de Trevifontein. Telefoon niet in je achterzak."],
+  ["Trevifontein", "Vanaf het plein kijken is altijd gratis. Alleen de rand bij het water kost tussen 9 en 22 uur €2 (alleen met pinpas). Vroeg of laat gaan scheelt geld en drukte."],
+  ["Stakingen", "Italiaanse OV-stakingen worden vooraf aangekondigd, vaak op vrijdag. Kijk de dag ervoor even op de site van het ministerie (scioperi.mit.gov.it)."]
+];
+
+var SOURCES = [
+  ["Colosseum: openingstijden en tickets (officieel)", "https://colosseo.it/en/opening-times-and-tickets/"],
+  ["Vaticaanse Musea: openingstijden (officieel)", "https://www.museivaticani.va"],
+  ["Trevifontein: toegangsticket €2 (Turismo Roma)", "https://www.turismoroma.it/en/news/trevi-fountain-new-entry-fee-one-romes-symbols"],
+  ["Pantheon: prijs €7 vanaf 1 juli 2026 (Wanted in Rome)", "https://www.wantedinrome.com/news/rome-raises-entry-fee-for-pantheon-from-5-to-7.html"],
+  ["Castel Sant'Angelo: openingstijden en prijs (Ministero della Cultura)", "https://cultura.gov.it/luogo/castel-santangelo"],
+  ["Falstaff, Teatro dell'Opera: data (Bachtrack)", "https://bachtrack.com/22/291/view/429339"],
+  ["Musea in Rome: sluitingsdagen en combitickets (Rome-Roma)", "https://www.rome-roma.net/en/museums-in-rome/"],
+  ["Galleria Borghese: tickets en tijdslots (Art Visit Guide)", "https://www.artvisitguide.com/borghese-gallery-tickets-guide/"],
+  ["Openbaar vervoer Rome 2026 (The Better Vacation)", "https://www.thebettervacation.com/nl/Rome/zich-verplaatsen-in-Rome/"]
+];
+
+function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+function tag(kind, label) { return el("span", "tag " + kind, label); }
+function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+
+// Dagenbalk
+var nav = document.getElementById("daynav");
+DAYS.forEach(function (d) {
+  var a = el("a"); a.href = "#" + d.id;
+  a.appendChild(el("span", "d", d.ab)); a.appendChild(el("span", "n", d.n));
+  nav.appendChild(a);
+});
+[["boeken", "Tickets"], ["tips", "Tips"]].forEach(function (x) {
+  var a = el("a", "aux"); a.href = "#" + x[0];
+  a.appendChild(el("span", "d", "·")); a.appendChild(el("span", "n", x[1]));
+  nav.appendChild(a);
+});
+
+// Weekoverzicht
+var wl = document.getElementById("weeklist");
+DAYS.forEach(function (d) {
+  var li = el("li"), a = el("a"); a.href = "#" + d.id;
+  var date = el("div", "w-date"); date.appendChild(el("span", "d", d.ab)); date.appendChild(el("span", "n", d.n));
+  var body = el("div"); body.style.minWidth = "0";
+  body.appendChild(el("div", "w-theme", d.theme));
+  body.appendChild(el("div", "w-hl", d.hl));
+  if (d.fix.length) { var f = el("div", "w-fix"); d.fix.forEach(function (x) { f.appendChild(tag(x[0], x[1])); }); body.appendChild(f); }
+  a.appendChild(date); a.appendChild(body); li.appendChild(a); wl.appendChild(li);
+});
+
+// Reserveren
+var bl = document.getElementById("booklist");
+BOOK.forEach(function (b) {
+  var li = el("li", "bk");
+  var cb = el("input"); cb.type = "checkbox"; cb.id = "bk-" + b.id; cb.setAttribute("aria-label", b.title + " geregeld");
+  if (store("rome-bk-" + b.id) === "1") { cb.checked = true; li.classList.add("done"); }
+  cb.addEventListener("change", function () { li.classList.toggle("done", cb.checked); store("rome-bk-" + b.id, cb.checked ? "1" : "0"); });
+  var body = el("div"); body.style.minWidth = "0";
+  var head = el("div", "bk-head");
+  var lab = el("label", "bk-title", b.title); lab.htmlFor = cb.id;
+  head.appendChild(lab); head.appendChild(el("span", "urg " + b.urg[0], b.urg[1]));
+  body.appendChild(head);
+  body.appendChild(el("div", "bk-when", b.when));
+  body.appendChild(el("p", "bk-note", b.note));
+  var foot = el("div", "bk-foot");
+  if (b.price) foot.appendChild(tag("ticket", b.price));
+  var link = el("a", null, b.site + " ↗"); link.href = b.url; link.target = "_blank"; link.rel = "noopener";
+  foot.appendChild(link);
+  body.appendChild(foot);
+  li.appendChild(cb); li.appendChild(body); bl.appendChild(li);
+});
+
+// Dagen
+var host = document.getElementById("days");
+DAYS.forEach(function (d) {
+  var s = el("section"); s.id = d.id; s.setAttribute("aria-labelledby", d.id + "-h");
+  var head = el("div", "day-head");
+  head.appendChild(el("div", "big", d.n));
+  var meta = el("div", "day-meta");
+  meta.appendChild(el("span", "it", d.it + " " + d.n + " ottobre"));
+  var h = el("h2", null, d.theme); h.id = d.id + "-h"; meta.appendChild(h);
+  var area = el("div", "area", d.area + " · ");
+  area.appendChild(el("span", "sun", "zon onder " + d.sun));
+  meta.appendChild(area);
+  head.appendChild(meta); s.appendChild(head);
+  if (d.notes.length) {
+    var ul = el("ul", "notes"); ul.setAttribute("aria-label", "Let op");
+    d.notes.forEach(function (n) { ul.appendChild(el("li", null, n)); });
+    s.appendChild(ul);
+  }
+  var ol = el("ol", "tl");
+  d.items.forEach(function (it) {
+    var li = el("li", it.opt ? "opt" : "");
+    li.appendChild(el("div", "time", it.t));
+    var b = el("div"); b.style.minWidth = "0";
+    b.appendChild(el("div", "t-title", it.title));
+    b.appendChild(el("p", "t-text", it.text));
+    if ((it.tags && it.tags.length) || it.map) {
+      var f = el("div", "t-foot");
+      (it.tags || []).forEach(function (x) { f.appendChild(tag(x[0], x[1])); });
+      if (it.map) { var m = el("a", "map", "Kaart ↗"); m.href = gm(it.map); m.target = "_blank"; m.rel = "noopener"; f.appendChild(m); }
+      b.appendChild(f);
+    }
+    li.appendChild(b); ol.appendChild(li);
+  });
+  s.appendChild(ol);
+  host.appendChild(s);
+});
+
+// Tips & bronnen
+var tl = document.getElementById("tiplist");
+TIPS.forEach(function (t) { var d = el("div", "tip"); d.appendChild(el("h3", null, t[0])); d.appendChild(el("p", null, t[1])); tl.appendChild(d); });
+var sl = document.getElementById("sourcelist");
+SOURCES.forEach(function (x) { var li = el("li"), a = el("a", null, x[0]); a.href = x[1]; a.target = "_blank"; a.rel = "noopener"; li.appendChild(a); sl.appendChild(li); });
+</script>
+
+</body></html>
