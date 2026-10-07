@@ -142,8 +142,148 @@ h2 { font-family: var(--display); font-weight: 500; font-size: 1.9rem; line-heig
 .sources { font-size: .86rem; color: var(--muted); padding-left: 18px; margin: 0; display: grid; gap: 4px; }
 footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: .85rem; color: var(--muted); }
 
+/* Kaart: tokens */
+:root {
+  --m-land: #E9E1CB; --m-land-edge: #D3C6A6; --m-park: #BFD6A1; --m-park-edge: #93B279;
+  --m-ruin: #E4CE9F; --m-ruin-edge: #C9AE78; --m-water: #97C6D6; --m-water-edge: #6EA9BE;
+  --m-road: #FBF7EC; --m-road-edge: #D3C6A6; --m-vatican: #EFE3BE;
+  --m-ink: #2B2620; --m-stone: #F5ECD6; --m-stone2: #DCC9A0; --m-brick: #D59A6A; --m-roof: #C8664A;
+  --m-dome: #A9BFC4; --m-tree: #6F9A54; --m-tree-dark: #4F7A3E; --m-trunk: #8A6440; --m-gold: #D9A63A;
+  --m-label: #3A342B; --m-halo: #F7F1E3; --m-shadow: rgba(70, 50, 20, .18); --m-stoptext: #FFFFFF; --m-hotel: #22355A;
+  --m-ma: #E2582A; --m-mb: #2D63B0; --m-mc: #2E9B4F; --m-metro-text: #FFFFFF;
+  --r1: #7B4FB0; --r2: #C23B30; --r3: #A8740A; --r4: #2F5DB3; --r5: #C2307A; --r6: #13806F; --r7: #DD6410; --r8: #4A5866;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --m-land: #2A2A23; --m-land-edge: #3E3C31; --m-park: #2F4329; --m-park-edge: #46613B;
+    --m-ruin: #4A4030; --m-ruin-edge: #66573D; --m-water: #2B4F5C; --m-water-edge: #3F6B7A;
+    --m-road: #3B3A31; --m-road-edge: #4B493D; --m-vatican: #3A3627;
+    --m-ink: #15130F; --m-stone: #D9CDB0; --m-stone2: #B9A880; --m-brick: #B57A4E; --m-roof: #B05A42;
+    --m-dome: #8EA4A9; --m-tree: #5E8A49; --m-tree-dark: #46703A; --m-trunk: #7A5A3A; --m-gold: #D9A63A;
+    --m-label: #E8E2D2; --m-halo: #23231D; --m-shadow: rgba(0, 0, 0, .35); --m-stoptext: #15130F; --m-hotel: #EBD9A0;
+    --r1: #B59AE0; --r2: #F07E70; --r3: #E3B54E; --r4: #82A6EE; --r5: #EE7FB5; --r6: #4FC7B2; --r7: #F5A15A; --r8: #A9B6C2;
+  }
+}
+:root[data-theme="dark"] {
+  --m-land: #2A2A23; --m-land-edge: #3E3C31; --m-park: #2F4329; --m-park-edge: #46613B;
+  --m-ruin: #4A4030; --m-ruin-edge: #66573D; --m-water: #2B4F5C; --m-water-edge: #3F6B7A;
+  --m-road: #3B3A31; --m-road-edge: #4B493D; --m-vatican: #3A3627;
+  --m-ink: #15130F; --m-stone: #D9CDB0; --m-stone2: #B9A880; --m-brick: #B57A4E; --m-roof: #B05A42;
+  --m-dome: #8EA4A9; --m-tree: #5E8A49; --m-tree-dark: #46703A; --m-trunk: #7A5A3A; --m-gold: #D9A63A;
+  --m-label: #E8E2D2; --m-halo: #23231D; --m-shadow: rgba(0, 0, 0, .35); --m-stoptext: #15130F; --m-hotel: #EBD9A0;
+  --r1: #B59AE0; --r2: #F07E70; --r3: #E3B54E; --r4: #82A6EE; --r5: #EE7FB5; --r6: #4FC7B2; --r7: #F5A15A; --r8: #A9B6C2;
+}
+
+/* Kaart: bediening */
+.map-chips { display: flex; gap: 6px; overflow-x: auto; padding-block: 2px 12px; scrollbar-width: none; }
+.map-chips::-webkit-scrollbar { display: none; }
+.chip { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 7px; font: 500 13.5px/1 var(--body); padding: 8px 12px; border-radius: 999px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); cursor: pointer; }
+.chip .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.map-frame { position: relative; width: 100%; aspect-ratio: 1 / 1.08; max-height: 82vh; border-radius: 16px; overflow: hidden; border: 1.5px solid var(--m-land-edge); background: var(--m-land); touch-action: none; }
+.map-frame > svg#map { display: block; width: 100%; height: 100%; cursor: grab; -webkit-user-select: none; user-select: none; -webkit-tap-highlight-color: transparent; }
+.map-frame.dragging > svg#map { cursor: grabbing; }
+.map-ctrl { position: absolute; top: 10px; right: 10px; display: grid; gap: 6px; }
+.map-ctrl button { width: 38px; height: 38px; display: grid; place-items: center; padding: 0; border-radius: 10px; border: 1px solid var(--rule); background: var(--card); color: var(--ink); font: 500 20px/1 var(--body); cursor: pointer; }
+.map-ctrl button svg { width: 18px; height: 18px; }
+.compass { position: absolute; top: 10px; left: 10px; width: 44px; height: 44px; pointer-events: none; }
+.compass .cbg { fill: var(--card); stroke: var(--rule); }
+.compass .cn { fill: var(--pompei); }
+.compass .cs { fill: var(--muted); }
+.compass text { font: 600 9px var(--mono); fill: var(--ink); text-anchor: middle; }
+.map-note { position: absolute; left: 10px; bottom: 10px; font: 11px/1.3 var(--mono); color: var(--muted); background: var(--card); padding: 5px 8px; border-radius: 6px; pointer-events: none; }
+.map-key { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: .85rem; color: var(--muted); }
+.map-key span { display: inline-flex; align-items: center; gap: 7px; }
+.map-key svg { color: var(--ink); }
+
+/* Kaart: SVG */
+#map .m-land { fill: var(--m-land); }
+#map .m-park { fill: var(--m-park); stroke: var(--m-park-edge); stroke-width: 1.3; vector-effect: non-scaling-stroke; }
+#map .m-ruin { fill: var(--m-ruin); stroke: var(--m-ruin-edge); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+#map .m-vat { fill: var(--m-vatican); stroke: var(--m-gold); stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+#map .m-plaza { fill: var(--m-road); stroke: var(--m-road-edge); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+#map .m-river-edge { fill: none; stroke: var(--m-water-edge); stroke-width: 22; stroke-linecap: round; stroke-linejoin: round; }
+#map .m-river { fill: none; stroke: var(--m-water); stroke-width: 17; stroke-linecap: round; stroke-linejoin: round; }
+#map .m-water { fill: var(--m-water); stroke: var(--m-water-edge); stroke-width: 1.2; vector-effect: non-scaling-stroke; }
+#map .m-island { fill: var(--m-land); stroke: var(--m-water-edge); stroke-width: 1; vector-effect: non-scaling-stroke; }
+#map .m-road-edge { fill: none; stroke: var(--m-road-edge); stroke-width: 9; stroke-linecap: round; stroke-linejoin: round; }
+#map .m-road { fill: none; stroke: var(--m-road); stroke-width: 6; stroke-linecap: round; stroke-linejoin: round; }
+#map .m-appia { fill: none; stroke: var(--m-stone2); stroke-width: 6; stroke-dasharray: 3 2.5; }
+#map .m-road-edge.minor { stroke-width: 6.2; }
+#map .m-road.minor { stroke-width: 4; }
+#map .m-path { fill: none; stroke: var(--m-road); stroke-width: 2.2; stroke-dasharray: 4 3; stroke-linecap: round; }
+#map .m-plane { fill: none; stroke: var(--m-tree); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 0 10; opacity: .8; }
+#map .m-bridge-edge { fill: none; stroke: var(--m-road-edge); stroke-width: 10; }
+#map .m-bridge { fill: none; stroke: var(--m-road); stroke-width: 6.5; }
+#map .m-bridge.stone { stroke: var(--m-stone2); }
+#map .m-wall { fill: none; stroke: var(--m-brick); stroke-width: 3.2; stroke-linejoin: round; stroke-dasharray: 7 2.2; opacity: .85; }
+#map .lb-street { font-family: var(--body); font-weight: 500; fill: var(--m-label); opacity: .8; text-anchor: middle; paint-order: stroke; stroke: var(--m-road); stroke-linejoin: round; }
+#map .lb-bridge { font-family: var(--display); font-style: italic; font-size: 10.5px; fill: var(--m-water-edge); text-anchor: middle; paint-order: stroke; stroke: var(--m-halo); stroke-width: 2.5px; }
+#map .metro .ma { fill: var(--m-ma); } #map .metro .mb { fill: var(--m-mb); } #map .metro .mc { fill: var(--m-mc); }
+#map .metro circle { stroke: var(--m-halo); stroke-width: 1.5; }
+#map .metro path { stroke: none; }
+#map .metro .mo { fill: none; }
+#map .metro .mm { font-size: 8px; font-weight: 800; fill: var(--m-metro-text); text-anchor: middle; }
+#map .lb-metro { font-size: 9.5px; font-weight: 600; fill: var(--m-label); paint-order: stroke; stroke: var(--m-halo); stroke-width: 2.5px; }
+#map text { font-family: var(--body); }
+#map .lb { font-size: 11px; font-weight: 650; fill: var(--m-label); text-anchor: middle; paint-order: stroke; stroke: var(--m-halo); stroke-width: 3px; stroke-linejoin: round; }
+#map .lb-area { font-family: var(--display); font-style: italic; font-size: 14px; fill: var(--m-label); text-anchor: middle; paint-order: stroke; stroke: var(--m-halo); stroke-width: 3px; stroke-linejoin: round; }
+#map .lb-river { font-family: var(--display); font-style: italic; font-size: 13px; fill: var(--m-water-edge); text-anchor: middle; }
+#map .lb-dist { font-family: var(--mono); font-size: 10px; letter-spacing: .16em; fill: var(--m-label); opacity: .62; text-anchor: middle; paint-order: stroke; stroke: var(--m-halo); stroke-width: 2.5px; }
+#map .lb-hill { font-family: var(--display); font-style: italic; font-size: 12px; fill: var(--m-label); opacity: .7; text-anchor: middle; }
+#map .lb-sign { font-size: 11px; font-weight: 600; fill: var(--m-label); paint-order: stroke; stroke: var(--m-halo); stroke-width: 3px; }
+#map .ico * { stroke: var(--m-ink); stroke-width: 1.1; stroke-linejoin: round; stroke-linecap: round; }
+#map .ico .s { fill: var(--m-stone); } #map .ico .s2 { fill: var(--m-stone2); } #map .ico .b { fill: var(--m-brick); }
+#map .ico .r { fill: var(--m-roof); } #map .ico .d { fill: var(--m-dome); } #map .ico .w { fill: var(--m-water); }
+#map .ico .g { fill: var(--m-gold); } #map .ico .k { fill: var(--m-ink); } #map .ico .p { fill: var(--m-tree); }
+#map .ico .p2 { fill: var(--m-tree-dark); } #map .ico .t { fill: var(--m-trunk); } #map .ico .gr { fill: var(--m-park); }
+#map .ico .l { fill: var(--m-halo); } #map .ico .ln { fill: none; }
+#map .ico .sh { fill: var(--m-shadow); stroke: none; }
+#map .ico .wl { fill: none; stroke: var(--m-halo); stroke-width: 1.4; }
+#map[data-z="0"] [data-min="1"], #map[data-z="0"] [data-min="2"], #map[data-z="1"] [data-min="2"],
+#map[data-z="0"] [data-min="3"], #map[data-z="1"] [data-min="3"], #map[data-z="2"] [data-min="3"] { display: none; }
+#map .rt-halo { fill: none; stroke: var(--m-halo); stroke-linecap: round; stroke-linejoin: round; }
+#map .rt { fill: none; stroke: var(--c); stroke-linecap: round; stroke-linejoin: round; }
+#map .wk, #map .stop { cursor: pointer; }
+#map .stop .main { fill: var(--c); stroke: var(--m-halo); stroke-width: 2.2; }
+#map .stop .pin { fill: var(--c); stroke: var(--m-halo); stroke-width: 1.5; }
+#map .stop text { font-size: 11.5px; font-weight: 700; fill: var(--m-stoptext); text-anchor: middle; }
+#map .stop.opt .main { fill: var(--m-halo); stroke: var(--c); stroke-width: 2.4; }
+#map .stop.opt text { fill: var(--c); }
+#map .stop.on .main { stroke: var(--m-ink); stroke-width: 2.4; }
+#map .bdg { fill: var(--c); stroke: var(--m-halo); stroke-width: 2; }
+#map .bdg-t { font-size: 11px; font-weight: 700; fill: var(--m-stoptext); text-anchor: middle; }
+#map .callout rect { fill: var(--card); stroke: var(--c); stroke-width: 1.5; }
+#map .callout text { font-size: 12.5px; font-weight: 600; fill: var(--ink); text-anchor: middle; }
+#map .callout .ct { font-family: var(--mono); font-weight: 500; fill: var(--muted); }
+#map .ico .hz { fill: var(--m-hotel); }
+#map .ico .wb { fill: none; stroke: var(--m-halo); stroke-width: 1.8; }
+#map .lb-hotel { fill: var(--m-hotel); font-size: 12px; font-weight: 700; }
+#map .legs { opacity: .6; }
+#map .hotel { cursor: pointer; }
+.num.hz { background: var(--m-hotel); color: var(--m-halo); }
+
+/* Kaart: legenda */
+.ml-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; margin: 20px 0 8px; }
+.ml-title { font-family: var(--display); font-size: 1.35rem; line-height: 1.15; }
+.ml-title .dot { display: inline-block; width: 11px; height: 11px; border-radius: 50%; background: var(--c); margin-right: 8px; vertical-align: .08em; }
+.ml-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--rule); }
+.ml-list button { width: 100%; display: grid; grid-template-columns: 28px 62px minmax(0, 1fr); gap: 10px; align-items: center; padding: 9px 6px; background: none; border: 0; border-bottom: 1px solid var(--rule); text-align: left; color: var(--ink); font: inherit; font-size: .95rem; cursor: pointer; }
+.ml-list button:hover, .ml-list button.on { background: var(--card); }
+.num { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font: 700 12px/1 var(--body); background: var(--c); color: var(--m-stoptext); }
+.num.opt { background: transparent; border: 2px solid var(--c); color: var(--c); }
+.ml-time { font-family: var(--mono); font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ml-sub { display: block; font-size: .8rem; color: var(--muted); }
+.wk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 8px; margin-top: 16px; }
+.wk-grid button { display: grid; grid-template-columns: 12px minmax(0, 1fr); gap: 4px 10px; align-items: baseline; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 10px; background: var(--card); color: var(--ink); font: inherit; font-size: .92rem; text-align: left; cursor: pointer; }
+.wk-grid .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--c); }
+.wk-grid .wd { font-family: var(--mono); font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.wk-grid .wt { grid-column: 2; font-weight: 600; }
+.maplink { font-size: .85rem; justify-self: start; }
+
 @media (max-width: 480px) {
   .tl > li, .week a { grid-template-columns: 52px minmax(0,1fr); gap: 10px; }
+  .ml-list button { grid-template-columns: 26px 52px minmax(0, 1fr); gap: 8px; }
   .time { font-size: 12.5px; }
   h2 { font-size: 1.6rem; }
 }
@@ -154,7 +294,7 @@ footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule);
     <div class="eyebrow">Roma · 10–17 ottobre 2026</div>
     <h1>Rome, <em>zes hele dagen</em></h1>
     <p class="lead">Per dag één deel van de stad, afgestemd op de sluitingsdagen en openingstijden van oktober 2026. Vaste tijdsloten staan in rood; alles in oker is optioneel.</p>
-    <p class="assume">Uitgangspunt: aankomst zaterdagmiddag 10 oktober, vertrek zaterdag 17 oktober, hotel in het centrum. Openingstijden gecontroleerd op 5 oktober 2026.</p>
+    <p class="assume">Hotel: Domus Fornaci, Via delle Fornaci 38, op loopafstand van het Sint-Pietersplein. Aankomst zaterdagmiddag 10 oktober, vertrek zaterdag 17 oktober. Openingstijden gecontroleerd op 5 oktober 2026.</p>
   </header>
 </div>
 
@@ -167,6 +307,37 @@ footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule);
     <h2 id="week-h">De week in één oogopslag</h2>
     <p class="sec-intro">Tik op een dag voor het uurschema.</p>
     <ul class="week" id="weeklist"></ul>
+  </section>
+
+  <section id="kaart" aria-labelledby="kaart-h">
+    <h2 id="kaart-h">Kaart</h2>
+    <p class="sec-intro">Kies een dag en de kaart zoomt in op die route. Tik op een nummer om de stop te zien. Slepen verschuift de kaart; knijpen of + en − zoomt. Hoe verder je inzoomt, hoe meer je ziet: straatnamen, bruggen en metrostations.</p>
+    <div class="map-chips" id="mapchips" role="group" aria-label="Kies een dag"></div>
+    <div class="map-frame" id="mapframe">
+      <svg id="map" role="img" aria-label="Vereenvoudigde kaart van Rome met de wandelroutes per dag" xmlns="http://www.w3.org/2000/svg"></svg>
+      <svg class="compass" viewBox="-22 -22 44 44" aria-hidden="true">
+        <circle class="cbg" r="20"></circle>
+        <text y="-10">N</text>
+        <path class="cn" d="M0 -6 L4.5 4 L0 2 L-4.5 4 Z"></path>
+        <path class="cs" d="M0 15 L3.5 6 L0 7.5 L-3.5 6 Z"></path>
+      </svg>
+      <div class="map-ctrl">
+        <button type="button" id="zin" aria-label="Inzoomen">+</button>
+        <button type="button" id="zout" aria-label="Uitzoomen">−</button>
+        <button type="button" id="zfit" aria-label="Hele route tonen"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4"></path></svg></button>
+      </div>
+      <div class="map-note">Niet op schaal · buitenwijken ingekort</div>
+    </div>
+    <div class="map-key" aria-label="Lijnen op de kaart">
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="3" y1="4" x2="31" y2="4" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="0.1 7"></line></svg>te voet</span>
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="2" y1="4" x2="32" y2="4" stroke="currentColor" stroke-width="2.6" stroke-dasharray="8 5"></line></svg>metro, bus of taxi</span>
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="2" y1="4" x2="32" y2="4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-dasharray="10 4 1 4"></line></svg>fiets</span>
+      <span><svg width="16" height="16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="2"></circle></svg>optioneel</span>
+      <span><svg width="16" height="16" viewBox="-8 -8 16 16" aria-hidden="true"><circle r="6.5" style="fill: var(--m-ma)"></circle><text y="3" text-anchor="middle" style="font: 800 8px var(--body); fill: var(--m-metro-text)">M</text></svg>metro</span>
+      <span><svg width="34" height="8" aria-hidden="true"><line x1="2" y1="4" x2="32" y2="4" stroke-width="3" stroke-dasharray="7 2.2" style="stroke: var(--m-brick)"></line></svg>oude stadsmuur</span>
+      <span><svg width="16" height="18" viewBox="-14 -28 28 29" aria-hidden="true"><path d="M-13 -27h26v19h-9l-4 7.5l-4-7.5h-9z" style="fill: var(--m-hotel)"></path></svg>jullie hotel (H)</span>
+    </div>
+    <div id="maplegend"></div>
   </section>
 
   <section id="boeken" aria-labelledby="boek-h">
@@ -195,20 +366,23 @@ footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule);
 var gm = function (q) { return "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(q + ", Roma"); };
 
 var DAYS = [
-  { id: "za10", ab: "Za", n: "10", it: "sabato", theme: "Aankomst & Rome bij avond", area: "Navona · Pantheon · Trevi", sun: "18:38",
-    hl: "Aankomst · Piazza Navona · Pantheon van buiten · Trevi bij nacht", fix: [],
-    notes: ["Laat geland? Sla de wandeling over en ga direct voor diner en Trevi."],
+  { id: "za10", ab: "Za", n: "10", it: "sabato", theme: "Aankomst & Rome bij avond", area: "Vaticaan · Ponte Sant'Angelo · Navona · Trevi", sun: "18:38",
+    hl: "Aankomst · Sint-Pietersplein bij avond · Ponte Sant'Angelo · Navona · Trevi bij nacht", fix: [],
+    notes: ["Inchecken bij de Domus Fornaci kan vanaf 16:00", "Laat geland? Sla de wandeling over en ga direct voor diner en Trevi."],
     items: [
-      { t: "Middag", title: "Aankomst en inchecken", text: "Vanaf Fiumicino met de Leonardo Express naar Termini (€14, ±32 min), daarna metro of taxi naar het hotel." },
-      { t: "18:00", title: "Piazza Navona", text: "Eerste kennismaking: Bernini's Vierstromenfontein en de gevel van Sant'Agnese in Agone. Zon onder om 18:38.", map: "Piazza Navona" },
-      { t: "18:45", title: "Pantheon van buiten", text: "Via Piazza Sant'Eustachio naar Piazza della Rotonda. Naar binnen gaan jullie woensdagochtend.", map: "Piazza della Rotonda" },
+      { t: "Middag", title: "Aankomst en inchecken", text: "Vanaf Fiumicino met de taxi naar de Domus Fornaci, Via delle Fornaci 38: vast tarief €55 voor het centrum en het Vaticaan, ±45 minuten. Noem het vaste tarief bij het instappen. Met de trein: FL1 naar Roma Trastevere (€8), daar overstappen op de FL3 of FL5 naar Roma San Pietro, en dan een paar minuten lopen.", tags: [["ticket", "taxi €55 vast"]] },
+      { t: "17:30", title: "Sint-Pietersplein bij avond", text: "Een paar minuten lopen van het hotel. Bernini's zuilengalerij in het avondlicht, zonder de drukte van overdag.", map: "Piazza San Pietro" },
+      { t: "18:00", title: "Via della Conciliazione & Ponte Sant'Angelo", text: "Over de lange laan naar de Tiber en over de brug met de engelen van Bernini, terwijl de zon ondergaat (18:38).", map: "Ponte Sant'Angelo" },
+      { t: "18:30", title: "Piazza Navona", text: "Via Via dei Coronari naar Bernini's Vierstromenfontein en de gevel van Sant'Agnese in Agone.", map: "Piazza Navona" },
+      { t: "19:00", title: "Pantheon van buiten", text: "Via Piazza Sant'Eustachio naar Piazza della Rotonda. Naar binnen gaan jullie woensdagochtend.", map: "Piazza della Rotonda" },
       { t: "20:00", title: "Diner", text: "Rond Campo de' Fiori of Via del Governo Vecchio. Romeinen eten laat; op zaterdag is reserveren verstandig." },
-      { t: "22:15", title: "Trevifontein bij nacht", text: "Na 22:00 is de rand van het bassin weer vrij toegankelijk zonder het ticket van €2, en veel rustiger. Muntje over je schouder.", map: "Fontana di Trevi", tags: [["free", "na 22:00 gratis"]] }
+      { t: "22:15", title: "Trevifontein bij nacht", text: "Na 22:00 is de rand van het bassin weer vrij toegankelijk zonder het ticket van €2, en veel rustiger. Muntje over je schouder. Daarna met de taxi terug naar het hotel (±15 min).", map: "Fontana di Trevi", tags: [["free", "na 22:00 gratis"]] }
     ] },
   { id: "zo11", ab: "Zo", n: "11", it: "domenica", theme: "Trastevere, Gianicolo & Aventijn", area: "Porta Portese · Trastevere · Gianicolo · Aventijn", sun: "18:36",
     hl: "Vlooienmarkt · Trastevere · kanonschot 12:00 op de Gianicolo · sleutelgat op de Aventijn", fix: [["opt", "Falstaff 19:00"]],
     notes: ["Vaticaanse Musea dicht (alleen de laatste zondag van de maand open)", "Mercato di Testaccio dicht op zondag"],
     items: [
+      { t: "08:00", title: "Naar Trastevere", text: "Vanaf station Roma San Pietro, vlak bij het hotel, met de trein FL3 of FL5 naar Roma Trastevere. Daarna 10 minuten lopen naar de markt. Op zondag rijden de treinen minder vaak, dus een taxi (±15 min) is een goed alternatief.", map: "Stazione Roma San Pietro" },
       { t: "08:30", title: "Porta Portese", text: "De grote zondagse vlooienmarkt: antiek, vintage en veel rommel. Vroeg is het leukst. Let op je spullen.", map: "Porta Portese" },
       { t: "10:00", title: "Trastevere", text: "Santa Maria in Trastevere met de gouden 12e-eeuwse mozaïeken, dan de steegjes rond Via della Lungaretta en Santa Cecilia in Trastevere. Het is zondag: tijdens de mis even wachten of stil achterin kijken.", map: "Santa Maria in Trastevere" },
       { t: "11:30", title: "Gianicolo", text: "Klim via Via Garibaldi langs de Fontana dell'Acqua Paola naar het terras. Om 12:00 klinkt onder het terras het dagelijkse kanonschot. Het mooiste uitzicht over alle koepels van de stad.", map: "Terrazza del Gianicolo" },
@@ -217,12 +391,13 @@ var DAYS = [
       { t: "15:45", title: "Aventijn", text: "Langs het Circo Massimo omhoog naar de Giardino degli Aranci (sinaasappeltuin met uitzicht), Santa Sabina en het sleutelgat op de Piazza dei Cavalieri di Malta, met de koepel van Sint-Pieter precies in beeld.", map: "Giardino degli Aranci" },
       { t: "17:00", opt: true, title: "Centrale Montemartini", text: "Klassieke beelden tussen de dieselmotoren en turbines van Rome's eerste elektriciteitscentrale. Metro B vanaf Piramide naar Garbatella. Koop hier het combiticket met de Capitolijnse Musea (7 dagen geldig), dan is maandag al betaald. Check de sluitingstijd.", map: "Centrale Montemartini", tags: [["ticket", "combi €15,50"], ["opt", "optie"]] },
       { t: "19:00", opt: true, title: "Falstaff, première", text: "Verdi's laatste opera in het Teatro dell'Opera, gedirigeerd door Michele Mariotti met Luca Salsi als Falstaff. Premièreavond: duurder en het snelst uitverkocht. Donderdag 18:00 past beter.", map: "Teatro dell'Opera di Roma", tags: [["opt", "optie"]] },
-      { t: "20:00", title: "Diner in Testaccio", text: "De wijk van de Romeinse klassiekers: carbonara, amatriciana, coda alla vaccinara." }
+      { t: "20:00", title: "Diner in Testaccio", text: "De wijk van de Romeinse klassiekers: carbonara, amatriciana, coda alla vaccinara. Daarna met de taxi terug naar het hotel (±15 min)." }
     ] },
   { id: "ma12", ab: "Ma", n: "12", it: "lunedì", theme: "Antiek Rome", area: "Colosseum · Forum · Palatijn · Capitool", sun: "18:34",
     hl: "Colosseum (ondergronds + arena) · Forum · Palatijn · lunch in Monti · Capitolijnse Musea", fix: [["book", "Colosseum 08:30"]],
     notes: ["Dicht op maandag: Galleria Borghese, Castel Sant'Angelo en de meeste staatsmusea", "Op de Palatijn is het Huis van Augustus maandag dicht", "Colosseum-tickets staan op naam: paspoort of ID mee"],
     items: [
+      { t: "07:45", title: "Naar het Colosseum", text: "Bus 64 stopt vlak bij het hotel en rijdt naar Piazza Venezia (±20 min). Daarna 10 minuten lopen langs de keizerfora. Een taxi doet er ±15 minuten over." },
       { t: "08:30", title: "Colosseum", text: "Het eerste tijdslot is het rustigst. Met de Full Experience kom je in de ondergrondse gangen en op de arenavloer. Reken op 1,5 uur. De officiële MyColosseum-app heeft een gratis audiotour.", map: "Colosseo", tags: [["book", "geboekt slot"], ["ticket", "≈ €24 p.p."]] },
       { t: "10:30", title: "Forum Romanum", text: "Via Sacra, Curia Iulia, de tempel van Vesta en Santa Maria Antiqua met vroegmiddeleeuwse fresco's (zit in de Full Experience).", map: "Foro Romano" },
       { t: "12:00", title: "Palatijn", text: "De keizerspaleizen, de Domus Tiberiana en vanaf de Farnesiaanse tuinen het uitzicht over het Forum.", map: "Palatino" },
@@ -230,25 +405,26 @@ var DAYS = [
       { t: "15:00", title: "Keizerfora & Trajanuszuil", text: "Te voet langs Via dei Fori Imperiali naar de Trajanusmarkt en -zuil, dan de Cordonata op naar Michelangelo's Piazza del Campidoglio.", map: "Colonna Traiana" },
       { t: "15:45", title: "Capitolijnse Musea", text: "Het originele ruiterstandbeeld van Marcus Aurelius, de Capitolijnse wolvin en de Stervende Galliër. De gang door het Tabularium geeft het mooiste zicht over het Forum. Dagelijks open.", map: "Musei Capitolini", tags: [["ticket", "combi €15,50"]] },
       { t: "18:15", title: "Zonsondergang boven het Forum", text: "Het gratis uitkijkpunt aan de achterkant van het Capitool kijkt recht over het Forum. Zon onder om 18:34.", map: "Terrazza sul Foro Romano, Campidoglio", tags: [["free", "gratis"]] },
-      { t: "20:00", title: "Diner in Monti", text: "Daarna langs de verlichte keizerfora terug." }
+      { t: "20:00", title: "Diner in Monti", text: "Bus 64 vanaf Via Nazionale rijdt daarna rechtstreeks terug naar het hotel." }
     ] },
   { id: "di13", ab: "Di", n: "13", it: "martedì", theme: "Vaticaan & Engelenburcht", area: "Vaticaan · Borgo · Ponte Sant'Angelo · Navona", sun: "18:33",
     hl: "Vaticaanse Musea · Sixtijnse Kapel · Sint-Pieter en koepel · Castel Sant'Angelo", fix: [["book", "Vaticaan 08:00"], ["opt", "Falstaff 20:00"]],
     notes: ["Schouders en knieën bedekt, anders kom je Sint-Pieter en de Sixtijnse Kapel niet in", "In de Sixtijnse Kapel zijn foto's verboden", "De basiliek is gratis; reken op een rij bij de security"],
     items: [
-      { t: "07:45", title: "Bij de ingang", text: "Viale Vaticano, 10 minuten lopen vanaf metro Ottaviano (lijn A). Ruim voor het tijdslot aanwezig zijn.", map: "Musei Vaticani, Viale Vaticano" },
+      { t: "07:20", title: "Lopen naar de musea", text: "Vanaf het hotel ±20 minuten: over het Sint-Pietersplein en langs de Vaticaanse muren naar de ingang aan Viale Vaticano. Ruim voor het tijdslot aanwezig zijn.", map: "Musei Vaticani, Viale Vaticano" },
       { t: "08:00", title: "Vaticaanse Musea & Sixtijnse Kapel", text: "Route: Pio-Clementino (Laocoön, Apollo van Belvedere), Galerij van de Landkaarten, Stanze di Raffaello (School van Athene) en als laatste de Sixtijnse Kapel. Reken op 3 tot 3,5 uur.", tags: [["book", "geboekt slot"], ["ticket", "€25 p.p. online"]] },
       { t: "11:30", title: "Sint-Pietersbasiliek", text: "Michelangelo's Pietà en Bernini's baldakijn. Vanaf de uitgang van de musea loop je buitenom naar het plein, ±15 minuten.", map: "Basilica di San Pietro" },
       { t: "12:45", title: "Koepel beklimmen", text: "551 treden, of met de lift naar het dak en daarna nog ±320 treden. Smal en steil, maar het uitzicht over het plein is het waard. Kaartjes ter plekke.", tags: [["ticket", "ter plekke"]] },
-      { t: "14:00", title: "Lunch in Borgo of Prati", text: "Een paar straten van het plein af eet je beter en goedkoper, richting Via Cola di Rienzo." },
+      { t: "14:00", title: "Lunch in Borgo of Prati", text: "Een paar straten van het plein af eet je beter en goedkoper, richting Via Cola di Rienzo. Het hotel is vlakbij, dus een middagpauze is makkelijk." },
       { t: "15:30", title: "Castel Sant'Angelo", text: "Het mausoleum van keizer Hadrianus, later pauselijke burcht. Bovenop het Engelenterras met uitzicht over de Tiber. Reken op 1,5 uur.", map: "Castel Sant'Angelo", tags: [["ticket", "€18 p.p."]] },
       { t: "17:30", title: "Ponte Sant'Angelo & Via dei Coronari", text: "Over de brug met Bernini's engelen, door het antiekstraatje naar Piazza Navona voor de zonsondergang (18:33).", map: "Via dei Coronari" },
-      { t: "20:00", opt: true, title: "Falstaff of diner bij Navona", text: "Falstaff begint om 20:00 in het Teatro dell'Opera. Na de lange Vaticaandag is een rustig diner rond Via del Governo Vecchio ook een prima keuze.", tags: [["opt", "optie"]] }
+      { t: "20:00", opt: true, title: "Falstaff of diner bij Navona", text: "Falstaff begint om 20:00 in het Teatro dell'Opera. Na de lange Vaticaandag is een rustig diner rond Via del Governo Vecchio ook een prima keuze. Terug naar het hotel: bus 64 of 25 minuten lopen.", tags: [["opt", "optie"]] }
     ] },
   { id: "wo14", ab: "Wo", n: "14", it: "mercoledì", theme: "Historisch centrum", area: "Trevi · Pantheon · Navona · Joods Getto", sun: "18:31",
     hl: "Trevi vroeg · Pantheon · Caravaggio's · Campo de' Fiori · Joods Getto", fix: [],
     notes: ["Woensdag is de pauselijke audiëntie op het Sint-Pietersplein; Sint-Pieter is dan 's ochtends dicht. Daarom het Vaticaan op dinsdag", "Kerken sluiten vaak tussen ±12:30 en 15:00"],
     items: [
+      { t: "07:30", title: "Naar Trevi", text: "Bus 64 naar Piazza Venezia, dan 10 minuten lopen via Via del Corso. Op woensdagochtend is de pauselijke audiëntie, dus rond het Sint-Pietersplein is het druk." },
       { t: "08:00", title: "Trevifontein", text: "Vóór 09:00 heb je geen ticket nodig voor de rand van het bassin en is het er nog bijna leeg. Tussen 9 en 22 uur kost dat stuk €2; vanaf het plein kijken blijft altijd gratis.", map: "Fontana di Trevi", tags: [["free", "vóór 9:00 gratis"]] },
       { t: "08:30", title: "Koffie aan de bar", text: "Staand aan de bar betaal je een fractie van de prijs aan tafel." },
       { t: "09:00", title: "Pantheon", text: "Meteen bij opening. De koepel van 43 meter doorsnee is van ongewapend beton, na bijna 1900 jaar nog steeds de grootste in zijn soort. Open 9 tot 19 uur.", map: "Pantheon", tags: [["ticket", "€7 p.p."]] },
@@ -259,40 +435,42 @@ var DAYS = [
       { t: "14:30", title: "Via Giulia & Joods Getto", text: "De renaissancestraat Via Giulia, dan de Portico d'Ottavia, het Theater van Marcellus en de Schildpaddenfontein.", map: "Portico d'Ottavia" },
       { t: "16:00", title: "Largo di Torre Argentina", text: "Vier tempels uit de Republiek en de plek waar Caesar werd vermoord. Tussen de ruïnes woont een kolonie katten.", map: "Largo di Torre Argentina" },
       { t: "16:45", opt: true, title: "Galleria Doria Pamphilj", text: "Privépaleis met Velázquez' portret van paus Innocentius X en werk van Caravaggio. Check de openingstijden.", map: "Galleria Doria Pamphilj", tags: [["opt", "optie"]] },
-      { t: "19:30", title: "Diner in het Getto", text: "Joods-Romeinse keuken: gefrituurde courgettebloemen en filetti di baccalà." }
+      { t: "19:30", title: "Diner in het Getto", text: "Joods-Romeinse keuken: gefrituurde courgettebloemen en filetti di baccalà. Bus 64 vanaf Largo Argentina brengt jullie daarna terug naar het hotel." }
     ] },
   { id: "do15", ab: "Do", n: "15", it: "giovedì", theme: "Borghese, Pincio & Spaanse Trappen", area: "Villa Borghese · Piazza del Popolo · Spagna", sun: "18:29",
     hl: "Galleria Borghese · Villa Borghese · Pincio · Spaanse Trappen · Bernini's Teresa", fix: [["book", "Borghese 09:00"], ["opt", "Falstaff 18:00"]],
     notes: ["Galleria Borghese: precies 2 uur binnen en geen kaartverkoop aan de deur", "Op de Spaanse Trappen zitten is verboden; er staat een boete op"],
     items: [
-      { t: "08:30", title: "Naar de Galleria Borghese", text: "Een half uur voor het slot aanwezig zijn; tassen gaan naar de garderobe.", map: "Galleria Borghese" },
+      { t: "08:00", title: "Naar de Galleria Borghese", text: "Een taxi is het makkelijkst, ±20 minuten. Met het OV is het omslachtig: bus 64 tot Via Nazionale en dan nog ±30 minuten lopen via Via Veneto." },
+      { t: "08:30", title: "Bij de ingang", text: "Een half uur voor het slot aanwezig zijn; tassen gaan naar de garderobe.", map: "Galleria Borghese" },
       { t: "09:00", title: "Galleria Borghese", text: "Bernini's Apollo en Daphne en de Ontvoering van Proserpina, zes Caravaggio's en Canova's Paolina Borghese. Is het beneden druk, begin dan boven in de schilderijengalerij.", tags: [["book", "geboekt slot"], ["ticket", "≈ €18 p.p."]] },
       { t: "11:15", title: "Villa Borghese", text: "Wandelen door het park, of een roeibootje op het meertje bij de Tempel van Asclepius.", map: "Laghetto di Villa Borghese" },
       { t: "12:15", title: "Pincio & Piazza del Popolo", text: "Vanaf het Pincio-terras kijk je over de piazza naar Sint-Pieter. Beneden hangen in Santa Maria del Popolo twee Caravaggio's in de Cerasi-kapel.", map: "Santa Maria del Popolo" },
       { t: "13:15", title: "Lunch", text: "Rond Via di Ripetta of Via della Croce." },
       { t: "14:45", title: "Via Margutta & Spaanse Trappen", text: "Door de kunstenaarsstraat Via Margutta en Via del Babuino naar de Spaanse Trappen en Trinità dei Monti, dan de winkelstraat Via Condotti.", map: "Piazza di Spagna" },
       { t: "16:15", title: "Santa Maria della Vittoria", text: "Bernini's Extase van de heilige Teresa. Vijf minuten lopen van het operagebouw.", map: "Santa Maria della Vittoria" },
-      { t: "18:00", opt: true, title: "Falstaff", text: "De vroege voorstelling in het Teatro dell'Opera, zodat er na afloop nog tijd is voor een laat diner. Liever geen opera: aperitivo op een dakterras.", map: "Teatro dell'Opera di Roma", tags: [["opt", "advies als je gaat"]] }
+      { t: "18:00", opt: true, title: "Falstaff", text: "De vroege voorstelling in het Teatro dell'Opera, zodat er na afloop nog tijd is voor een laat diner. Liever geen opera: aperitivo op een dakterras. Bus 64 stopt om de hoek op Via Nazionale en rijdt rechtstreeks terug naar het hotel.", map: "Teatro dell'Opera di Roma", tags: [["opt", "advies als je gaat"]] }
     ] },
   { id: "vr16", ab: "Vr", n: "16", it: "venerdì", theme: "Domus Aurea, Caracalla & Via Appia", area: "Colle Oppio · Terme di Caracalla · Appia Antica", sun: "18:28",
     hl: "Nero's Domus Aurea · thermen van Caracalla · fietsen over de Via Appia · catacomben · aquaducten", fix: [["book", "Domus Aurea 09:00"]],
     notes: ["De Domus Aurea is alleen vrijdag t/m zondag open", "Vrijdag is in Italië een geliefde stakingsdag voor het OV: check vooraf, en anders taxi"],
     items: [
+      { t: "08:15", title: "Naar de Domus Aurea", text: "Taxi (±20 min), of bus 64 tot Piazza Venezia en dan 20 minuten lopen langs het Colosseum." },
       { t: "09:00", title: "Domus Aurea", text: "Nero's Gouden Huis onder de Colle Oppio, vlak bij het Colosseum. Bezoek met een vaste starttijd. Het is er koel, neem een vest mee.", map: "Domus Aurea", tags: [["book", "geboekt slot"]] },
       { t: "11:00", title: "Terme di Caracalla", text: "De keizerlijke thermen. De bakstenen muren staan nog tientallen meters hoog en een deel van de mozaïekvloeren ligt er nog. Taxi of metro B naar Circo Massimo.", map: "Terme di Caracalla" },
       { t: "12:30", title: "Naar de Via Appia Antica", text: "Taxi of bus 118 naar het infopunt van het park en daar (elektrische) fietsen huren. Lunch langs de weg.", map: "Appia Antica punto informativo" },
       { t: "14:00", title: "Catacomben", text: "San Callisto of San Sebastiano, alleen met rondleiding van ±40 minuten.", map: "Catacombe di San Callisto" },
       { t: "15:00", title: "Fietsen over de Romeinse weg", text: "Origineel plaveisel, het graf van Caecilia Metella en de Villa dei Quintili. Na Caecilia Metella wordt het het mooist en het stilst.", map: "Mausoleo di Cecilia Metella" },
-      { t: "17:45", opt: true, title: "Parco degli Acquedotti", text: "Romeinse aquaducten dwars door een grasvlakte, op hun mooist rond zonsondergang (18:28). Metro A Giulio Agricola terug naar het centrum.", map: "Parco degli Acquedotti", tags: [["opt", "optie"]] },
-      { t: "20:30", title: "Afscheidsdiner", text: "Trastevere of Testaccio, daarna een laatste rondje langs het verlichte Pantheon." },
+      { t: "17:45", opt: true, title: "Parco degli Acquedotti", text: "Romeinse aquaducten dwars door een grasvlakte, op hun mooist rond zonsondergang (18:28). Metro A vanaf Giulio Agricola rijdt in ±30 minuten naar Ottaviano; vandaar is het ±20 minuten lopen naar het hotel.", map: "Parco degli Acquedotti", tags: [["opt", "optie"]] },
+      { t: "20:30", title: "Afscheidsdiner", text: "Trastevere ligt het dichtst bij het hotel. Daarna met de taxi terug, of eerst nog een laatste rondje langs het verlichte Pantheon." },
       { t: "Of", opt: true, title: "Alternatief: Ostia Antica", text: "Liever één grote opgraving in plaats van de Appia? Ostia Antica is een complete Romeinse havenstad. Trein vanaf Piramide, ±30 minuten. Op maandag dicht.", map: "Ostia Antica scavi", tags: [["opt", "alternatief"]] }
     ] },
-  { id: "za17", ab: "Za", n: "17", it: "sabato", theme: "Vertrek", area: "Centrum · Termini · Fiumicino", sun: "18:26",
-    hl: "Markt · laatste gelato · naar Fiumicino", fix: [],
-    notes: [],
+  { id: "za17", ab: "Za", n: "17", it: "sabato", theme: "Vertrek", area: "Hotel · Campo de' Fiori · Fiumicino", sun: "18:26",
+    hl: "Uitchecken · markt op Campo de' Fiori · naar Fiumicino", fix: [],
+    notes: ["Uitchecken bij de Domus Fornaci kan tot 11:00"],
     items: [
-      { t: "Ochtend", title: "Laatste rondje", text: "Afhankelijk van de vlucht: de markt op Campo de' Fiori, of iets wat is blijven liggen. Laatste gelato." },
-      { t: "Vertrek", title: "Naar Fiumicino", text: "Leonardo Express vanaf Termini (€14, ±32 min). Plan ruim: op zaterdag zijn trein en security vaak druk." }
+      { t: "Ochtend", title: "Uitchecken en laatste rondje", text: "Uitchecken vóór 11:00 en vragen of jullie bagage bij de receptie kan blijven. Daarna naar de markt op Campo de' Fiori (25 minuten lopen of bus 64) of nog één keer naar het Sint-Pietersplein. Laatste gelato.", map: "Campo de' Fiori" },
+      { t: "Vertrek", title: "Naar Fiumicino", text: "Bagage ophalen en met de taxi naar het vliegveld: vast tarief €55, ±45 minuten. Met de trein: FL3 of FL5 van Roma San Pietro naar Roma Trastevere en daar de FL1 naar Fiumicino (€8). Plan ruim: op zaterdag zijn trein en security vaak druk.", tags: [["ticket", "taxi €55 vast"]] }
     ] }
 ];
 
@@ -307,6 +485,8 @@ var BOOK = [
 ];
 
 var TIPS = [
+  ["Hotel", "Domus Fornaci, Via delle Fornaci 38. Inchecken van 16:00 tot 23:30, uitchecken tot 11:00. Station Roma San Pietro (treinen FL3 en FL5) en de bus 64 liggen op een paar minuten lopen."],
+  ["Bus 64", "Jullie vaste lijn: van vlak bij het hotel via Corso Vittorio Emanuele, Largo Argentina, Piazza Venezia en Via Nazionale naar Termini. Handig, maar vaak vol en bekend om zakkenrollers."],
   ["Vervoer", "Het centrum is goed te lopen. Voor metro, bus en tram: tik met je bankpas of telefoon bij het poortje; een rit (BIT, 100 minuten) kost €1,50 en je betaalt nooit meer dan €8,50 per dag. Een verhoging naar €2 is aangekondigd, dus kijk bij de automaat."],
   ["Kleding", "Schouders en knieën bedekt voor het Vaticaan, Sint-Pieter en eigenlijk alle kerken. Een sjaal in de tas lost het meeste op. Goede schoenen: kinderkopjes en veel trappen."],
   ["Weer half oktober", "Overdag meestal rond de 20–23 °C, 's avonds rond de 13 °C. Een bui is goed mogelijk, dus een klein regenjack mee. Zon onder rond half zeven."],
@@ -326,7 +506,10 @@ var SOURCES = [
   ["Falstaff, Teatro dell'Opera: data (Bachtrack)", "https://bachtrack.com/22/291/view/429339"],
   ["Musea in Rome: sluitingsdagen en combitickets (Rome-Roma)", "https://www.rome-roma.net/en/museums-in-rome/"],
   ["Galleria Borghese: tickets en tijdslots (Art Visit Guide)", "https://www.artvisitguide.com/borghese-gallery-tickets-guide/"],
-  ["Openbaar vervoer Rome 2026 (The Better Vacation)", "https://www.thebettervacation.com/nl/Rome/zich-verplaatsen-in-Rome/"]
+  ["Openbaar vervoer Rome 2026 (The Better Vacation)", "https://www.thebettervacation.com/nl/Rome/zich-verplaatsen-in-Rome/"],
+  ["Domus Fornaci: adres en in- en uitchecktijden (Rumbo)", "https://www.rumbo.es/hoteles/italia/roma/sonder-piazza-san-pietro_hid-5513969"],
+  ["Via delle Fornaci: bus 64 en loopafstand Vaticaan (Fornaci Guest House)", "https://www.bed-and-breakfast.it/en/amp/latium/fornaci-guest-house-roma/65067"],
+  ["Taxi vast tarief en FL1-trein vanaf Fiumicino (Untold Italy)", "https://untolditaly.com/rome-airport-transfers/"]
 ];
 
 function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -340,7 +523,7 @@ DAYS.forEach(function (d) {
   a.appendChild(el("span", "d", d.ab)); a.appendChild(el("span", "n", d.n));
   nav.appendChild(a);
 });
-[["boeken", "Tickets"], ["tips", "Tips"]].forEach(function (x) {
+[["kaart", "Kaart"], ["boeken", "Tickets"], ["tips", "Tips"]].forEach(function (x) {
   var a = el("a", "aux"); a.href = "#" + x[0];
   a.appendChild(el("span", "d", "·")); a.appendChild(el("span", "n", x[1]));
   nav.appendChild(a);
@@ -392,6 +575,8 @@ DAYS.forEach(function (d) {
   var area = el("div", "area", d.area + " · ");
   area.appendChild(el("span", "sun", "zon onder " + d.sun));
   meta.appendChild(area);
+  var ml = el("a", "maplink", "Bekijk op de kaart ↑"); ml.href = "#kaart"; ml.setAttribute("data-mapday", d.id);
+  meta.appendChild(ml);
   head.appendChild(meta); s.appendChild(head);
   if (d.notes.length) {
     var ul = el("ul", "notes"); ul.setAttribute("aria-label", "Let op");
@@ -422,6 +607,834 @@ var tl = document.getElementById("tiplist");
 TIPS.forEach(function (t) { var d = el("div", "tip"); d.appendChild(el("h3", null, t[0])); d.appendChild(el("p", null, t[1])); tl.appendChild(d); });
 var sl = document.getElementById("sourcelist");
 SOURCES.forEach(function (x) { var li = el("li"), a = el("a", null, x[0]); a.href = x[1]; a.target = "_blank"; a.rel = "noopener"; li.appendChild(a); sl.appendChild(li); });
+</script>
+
+<script>
+/* ===== Kaart van Rome ===== */
+(function () {
+  var NS = "http://www.w3.org/2000/svg";
+  // Projectie: km rond het centrum; buiten R0 km worden afstanden ingekort (zoals op een dierentuinplattegrond)
+  var C0 = [41.8960, 12.4780], KX = 82.93, KY = 111.1, R0 = 2.6, CF = 0.32;
+  var XMIN = -2.95, XMAX = 3.95, YMIN = -4.3, YMAX = 2.95, S = 150;
+  var W = (XMAX - XMIN) * S, H = (YMAX - YMIN) * S;
+  function P(ll) {
+    var x = (ll[1] - C0[1]) * KX, y = (ll[0] - C0[0]) * KY, r = Math.sqrt(x * x + y * y);
+    if (r > R0) { var r2 = R0 + (r - R0) * CF; x *= r2 / r; y *= r2 / r; }
+    return [(x - XMIN) * S, (YMAX - y) * S];
+  }
+  function fx(p) { return p[0].toFixed(1) + " " + p[1].toFixed(1); }
+  function poly(pts) { return "M" + pts.map(fx).join("L"); }
+  function smooth(pts, closed) {
+    var n = pts.length;
+    if (n < 3 && !closed) return poly(pts);
+    function g(i) { return closed ? pts[(i + n) % n] : pts[Math.max(0, Math.min(n - 1, i))]; }
+    var d = "M" + fx(pts[0]), last = closed ? n : n - 1;
+    for (var i = 0; i < last; i++) {
+      var p0 = g(i - 1), p1 = g(i), p2 = g(i + 1), p3 = g(i + 2);
+      d += "C" + fx([p1[0] + (p2[0] - p0[0]) / 6, p1[1] + (p2[1] - p0[1]) / 6]) + " " +
+        fx([p2[0] - (p3[0] - p1[0]) / 6, p2[1] - (p3[1] - p1[1]) / 6]) + " " + fx(p2);
+    }
+    return closed ? d + "Z" : d;
+  }
+  function E(tag, attrs, parent) {
+    var e = document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function PP(a) { return a.map(P); }
+
+  /* --- Geografie (lat, lon) --- */
+  var RIVER = [[41.9240,12.4660],[41.9180,12.4682],[41.9130,12.4708],[41.9105,12.4722],[41.9075,12.4735],[41.9055,12.4738],[41.9035,12.4712],[41.9017,12.4667],[41.9004,12.4645],[41.8982,12.4636],[41.8957,12.4651],[41.8936,12.4684],[41.8921,12.4719],[41.8909,12.4758],[41.8897,12.4794],[41.8872,12.4792],[41.8840,12.4776],[41.8800,12.4757],[41.8760,12.4731],[41.8725,12.4706],[41.8680,12.4705],[41.8640,12.4722],[41.8580,12.4738],[41.8520,12.4700],[41.8440,12.4650]];
+  var AREAS = [
+    ["vat", [[41.9072,12.4478],[41.9078,12.4520],[41.9070,12.4558],[41.9056,12.4578],[41.9040,12.4576],[41.9032,12.4590],[41.9012,12.4590],[41.9004,12.4565],[41.9002,12.4528],[41.9010,12.4490],[41.9034,12.4462],[41.9058,12.4460]]],
+    ["park", [[41.9068,12.4482],[41.9070,12.4518],[41.9052,12.4526],[41.9027,12.4506],[41.9031,12.4476],[41.9050,12.4468]]],
+    ["park", [[41.9100,12.4782],[41.9135,12.4772],[41.9170,12.4792],[41.9192,12.4840],[41.9190,12.4905],[41.9168,12.4955],[41.9140,12.4965],[41.9112,12.4920],[41.9092,12.4870],[41.9090,12.4815]]],
+    ["park", [[41.8985,12.4595],[41.8960,12.4625],[41.8925,12.4632],[41.8890,12.4652],[41.8860,12.4660],[41.8850,12.4620],[41.8900,12.4590],[41.8950,12.4575]]],
+    ["park", [[41.8945,12.4925],[41.8940,12.4975],[41.8915,12.4990],[41.8898,12.4962],[41.8905,12.4932]]],
+    ["park", [[41.8865,12.4905],[41.8850,12.4950],[41.8810,12.4975],[41.8770,12.4965],[41.8765,12.4915],[41.8800,12.4882],[41.8840,12.4882]]],
+    ["park", [[41.8860,12.4785],[41.8852,12.4812],[41.8830,12.4806],[41.8824,12.4782],[41.8842,12.4774]]],
+    ["park", [[41.8700,12.5000],[41.8640,12.5120],[41.8520,12.5260],[41.8380,12.5420],[41.8260,12.5500],[41.8240,12.5400],[41.8380,12.5250],[41.8500,12.5110],[41.8620,12.4990]]],
+    ["park", [[41.8600,12.5520],[41.8560,12.5650],[41.8480,12.5690],[41.8450,12.5600],[41.8520,12.5520]]],
+    ["ruin", [[41.8950,12.4835],[41.8940,12.4872],[41.8918,12.4900],[41.8895,12.4900],[41.8875,12.4885],[41.8870,12.4850],[41.8885,12.4830],[41.8915,12.4835],[41.8935,12.4820]]],
+    ["ruin", [[41.8872,12.4823],[41.8862,12.4885],[41.8850,12.4882],[41.8860,12.4820]]],
+    ["plaza", [[41.9031,12.4562],[41.9031,12.4582],[41.9022,12.4590],[41.9013,12.4582],[41.9013,12.4562],[41.9022,12.4556]]]
+  ];
+  var ISLAND = [[41.8910,12.4767],[41.8907,12.4784],[41.8902,12.4787],[41.8903,12.4772]];
+  var POND = [[41.9132,12.4815],[41.9131,12.4830],[41.9124,12.4831],[41.9124,12.4816]];
+  // [naam, straatnaam vanaf zoom, a = hoofdweg / b = kleinere straat, punten]
+  var STREETS = [
+    ["Via del Corso", 2, "a", [[41.9107,12.4763],[41.9050,12.4790],[41.9000,12.4808],[41.8962,12.4825]]],
+    ["Via dei Fori Imperiali", 2, "a", [[41.8962,12.4825],[41.8935,12.4870],[41.8910,12.4908]]],
+    ["Via del Teatro di Marcello", 3, "a", [[41.8960,12.4815],[41.8930,12.4800],[41.8890,12.4812]]],
+    ["Via della Conciliazione", 2, "a", [[41.9022,12.4590],[41.9026,12.4653]]],
+    ["Corso Vittorio Emanuele II", 2, "a", [[41.8957,12.4790],[41.8970,12.4740],[41.8985,12.4700],[41.8998,12.4672],[41.9007,12.4650]]],
+    ["Via Nazionale", 2, "a", [[41.8962,12.4825],[41.8978,12.4870],[41.9000,12.4920],[41.9028,12.4962]]],
+    [null, 0, "a", [[41.9028,12.4962],[41.9010,12.5016]]],
+    ["Via di San Gregorio", 3, "a", [[41.8898,12.4915],[41.8865,12.4900],[41.8848,12.4890]]],
+    ["Viale Aventino", 2, "a", [[41.8848,12.4890],[41.8810,12.4855],[41.8763,12.4810]]],
+    ["Via delle Terme di Caracalla", 3, "a", [[41.8848,12.4890],[41.8800,12.4950],[41.8760,12.4985],[41.8735,12.5010]]],
+    ["Via Ostiense", 2, "a", [[41.8763,12.4810],[41.8700,12.4790],[41.8620,12.4778]]],
+    ["Viale di Trastevere", 2, "a", [[41.8912,12.4737],[41.8850,12.4712],[41.8780,12.4680]]],
+    ["Via Veneto", 2, "a", [[41.9037,12.4886],[41.9065,12.4890],[41.9095,12.4890]]],
+    ["Via del Tritone", 2, "a", [[41.9015,12.4810],[41.9025,12.4850],[41.9037,12.4886]]],
+    ["Via Cavour", 2, "a", [[41.9008,12.4990],[41.8985,12.4960],[41.8960,12.4920],[41.8937,12.4885]]],
+    ["Via Merulana", 2, "a", [[41.8970,12.4985],[41.8915,12.5018],[41.8862,12.5048]]],
+    ["Via Labicana", 2, "a", [[41.8902,12.4935],[41.8880,12.4990],[41.8862,12.5040]]],
+    ["Via XX Settembre", 2, "a", [[41.9015,12.4910],[41.9050,12.4960],[41.9093,12.5015]]],
+    ["Via Gregorio VII", 2, "a", [[41.9003,12.4565],[41.8965,12.4510],[41.8925,12.4462]]],
+    ["Via Flaminia", 2, "a", [[41.9118,12.4762],[41.9160,12.4748],[41.9210,12.4728]]],
+    ["Via Appia Nuova", 2, "a", [[41.8858,12.5085],[41.8745,12.5225],[41.8625,12.5378],[41.8545,12.5500]]],
+    ["Viale del Muro Torto", 3, "a", [[41.9118,12.4765],[41.9126,12.4805],[41.9112,12.4855],[41.9095,12.4888]]],
+    ["Corso d'Italia", 3, "a", [[41.9095,12.4888],[41.9118,12.4945],[41.9112,12.4990],[41.9093,12.5015]]],
+    ["Via del Quirinale", 3, "b", [[41.8996,12.4865],[41.9015,12.4910]]],
+    ["Via di Ripetta", 3, "b", [[41.9105,12.4758],[41.9060,12.4746],[41.9030,12.4742]]],
+    ["Via della Scrofa", 3, "b", [[41.9030,12.4742],[41.9000,12.4752],[41.8988,12.4755]]],
+    ["Via del Babuino", 3, "b", [[41.9105,12.4768],[41.9080,12.4792],[41.9058,12.4815]]],
+    ["Via Condotti", 3, "b", [[41.9055,12.4812],[41.9048,12.4793]]],
+    ["Via Sistina", 3, "b", [[41.9061,12.4836],[41.9050,12.4858],[41.9037,12.4880]]],
+    ["Via Barberini", 3, "b", [[41.9037,12.4886],[41.9045,12.4925]]],
+    ["Via Cola di Rienzo", 2, "b", [[41.9066,12.4595],[41.9083,12.4640],[41.9095,12.4680],[41.9105,12.4720]]],
+    ["Via Crescenzio", 3, "b", [[41.9058,12.4600],[41.9055,12.4640],[41.9050,12.4690]]],
+    ["Via Ottaviano", 3, "b", [[41.9066,12.4590],[41.9093,12.4585],[41.9118,12.4580]]],
+    ["Via di Porta Angelica", 3, "b", [[41.9035,12.4592],[41.9066,12.4590]]],
+    ["Viale Vaticano", 3, "b", [[41.9072,12.4565],[41.9080,12.4520],[41.9072,12.4475],[41.9048,12.4452]]],
+    ["Borgo Pio", 3, "b", [[41.9045,12.4592],[41.9045,12.4645]]],
+    ["Borgo Santo Spirito", 3, "b", [[41.9013,12.4595],[41.9015,12.4628],[41.9007,12.4650]]],
+    ["Via della Lungara", 3, "b", [[41.9010,12.4615],[41.8985,12.4640],[41.8960,12.4652],[41.8925,12.4672]]],
+    ["Via Garibaldi", 3, "b", [[41.8925,12.4672],[41.8905,12.4660],[41.8886,12.4647],[41.8848,12.4617]]],
+    ["Passeggiata del Gianicolo", 3, "b", [[41.8848,12.4617],[41.8885,12.4608],[41.8917,12.4614],[41.8945,12.4608],[41.8972,12.4622],[41.8990,12.4636]]],
+    ["Via della Lungaretta", 3, "b", [[41.8893,12.4702],[41.8895,12.4737]]],
+    ["Via Portuense", 3, "b", [[41.8838,12.4740],[41.8780,12.4712],[41.8722,12.4675]]],
+    ["Via Marmorata", 3, "b", [[41.8805,12.4768],[41.8765,12.4808]]],
+    ["Via dei Cerchi", 3, "b", [[41.8875,12.4818],[41.8858,12.4890]]],
+    ["Via Giulia", 3, "b", [[41.8990,12.4660],[41.8962,12.4682],[41.8935,12.4705]]],
+    ["Via dei Coronari", 3, "b", [[41.9010,12.4672],[41.9003,12.4700],[41.9000,12.4728]]],
+    ["Corso Rinascimento", 3, "b", [[41.8975,12.4737],[41.9005,12.4742]]],
+    ["Via Arenula", 3, "b", [[41.8920,12.4740],[41.8953,12.4768]]],
+    ["Via del Plebiscito", 3, "b", [[41.8957,12.4790],[41.8962,12.4825]]],
+    ["Via Panisperna", 3, "b", [[41.8978,12.4890],[41.8960,12.4950]]],
+    ["Via dei Serpenti", 3, "b", [[41.8945,12.4920],[41.8985,12.4932]]]
+  ];
+  var APPIA = [[41.8735,12.5010],[41.8652,12.5034],[41.8595,12.5103],[41.8525,12.5196],[41.8300,12.5452]];
+  // Paden in Villa Borghese
+  var PATHS = [
+    [[41.9142,12.4922],[41.9130,12.4880],[41.9140,12.4848],[41.9128,12.4823],[41.9113,12.4797]],
+    [[41.9160,12.4800],[41.9140,12.4848],[41.9170,12.4880],[41.9165,12.4930]],
+    [[41.9100,12.4890],[41.9130,12.4880]]
+  ];
+  // Pleinen: [lat, lon, halve breedte km, halve hoogte km, opgraving?]
+  var PLAZAS = [
+    [41.9107,12.4763,0.085,0.065], [41.8962,12.4825,0.07,0.055], [41.9028,12.4962,0.065,0.065],
+    [41.9058,12.4819,0.03,0.07], [41.8992,12.4731,0.045,0.13], [41.8957,12.4722,0.045,0.028],
+    [41.8993,12.4768,0.035,0.025], [41.8955,12.4768,0.045,0.03,true]
+  ];
+  // Aureliaanse muur en de muur op de Gianicolo
+  var WALLS = [
+    [[41.9124,12.4735],[41.9114,12.4762],[41.9127,12.4790],[41.9122,12.4830],[41.9106,12.4865],[41.9095,12.4890],[41.9112,12.4935],[41.9122,12.4975],[41.9105,12.5005],[41.9093,12.5015],[41.9093,12.5060],[41.9045,12.5088],[41.9015,12.5090],[41.8985,12.5105],[41.8945,12.5130],[41.8915,12.5150],[41.8885,12.5135],[41.8862,12.5100],[41.8845,12.5082],[41.8820,12.5040],[41.8800,12.5000],[41.8770,12.5015],[41.8752,12.5032],[41.8735,12.5012],[41.8728,12.4950],[41.8738,12.4885],[41.8758,12.4815],[41.8752,12.4770],[41.8742,12.4722]],
+    [[41.8830,12.4768],[41.8838,12.4740],[41.8840,12.4700],[41.8845,12.4655],[41.8848,12.4617],[41.8880,12.4598],[41.8920,12.4592],[41.8960,12.4585],[41.8990,12.4578],[41.9003,12.4562]]
+  ];
+  var BRIDGES = [
+    ["Ponte Matteotti",[41.9150,12.4695]], ["Ponte Margherita",[41.9105,12.4722]], ["Ponte Cavour",[41.9055,12.4738]],
+    ["Ponte Umberto I",[41.9035,12.4712]], ["Ponte Sant'Angelo",[41.9017,12.4667],"stone"], ["Ponte Vittorio Emanuele II",[41.9004,12.4645]],
+    ["Ponte Principe Amedeo",[41.8982,12.4636]], ["Ponte Mazzini",[41.8957,12.4651]], ["Ponte Sisto",[41.8925,12.4712],"stone"],
+    ["Ponte Garibaldi",[41.8913,12.4740]], ["Ponte Fabricio & Cestio",[41.8906,12.4776],"stone"], ["Ponte Palatino",[41.8893,12.4797]],
+    ["Ponte Sublicio",[41.8800,12.4757]], ["Ponte Testaccio",[41.8725,12.4706]]
+  ];
+  // [naam, plek, lijnen]
+  var METRO = [
+    ["Ottaviano",[41.9093,12.4585],"a"], ["Lepanto",[41.9143,12.4652],"a"], ["Flaminio",[41.9118,12.4772],"a"], ["Spagna",[41.9068,12.4834],"a"],
+    ["Barberini",[41.9037,12.4892],"a"], ["Repubblica",[41.9026,12.4958],"a"], ["",[41.9006,12.5034],"ab"], ["Vittorio Emanuele",[41.8946,12.5040],"a"],
+    ["Manzoni",[41.8890,12.5105],"a"], ["San Giovanni",[41.8858,12.5095],"ac"], ["Giulio Agricola",[41.8588,12.5590],"a"],
+    ["Cavour",[41.8946,12.4935],"b"], ["Colosseo",[41.8912,12.4910],"bc"], ["Circo Massimo",[41.8836,12.4888],"b"], ["Piramide",[41.8756,12.4822],"b"],
+    ["Garbatella",[41.8672,12.4818],"b"], ["Castro Pretorio",[41.9058,12.5065],"b"], ["Porta Metronia",[41.8810,12.4990],"c"]
+  ];
+
+  /* --- Icoontjes (32-px raster, middelpunt 0,0) --- */
+  var IC = {
+    colosseo: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.6"/><path class="s" d="M-15 0a15 8 0 0 1 30 0v4a15 8 0 0 1-30 0z"/><ellipse class="s2" cx="0" cy="0" rx="9" ry="4.5"/><path class="ln" d="M-15 0a15 8 0 0 0 30 0M-10 7v2M-5 8.5v2M0 9v2M5 8.5v2M10 7v2"/>',
+    dome: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.5"/><rect class="s" x="-14" y="3" width="28" height="9"/><path class="s" d="M-8 3v-4h16v4z"/><path class="d" d="M-8 -1a8 9 0 0 1 16 0z"/><path class="s" d="M-1.6 -10h3.2v-2.5h-3.2z"/><path class="ln" d="M0 -12.5v-3M-1.5 -14.5h3M-10 5v6M-6 5v6M-2 5v6M2 5v6M6 5v6M10 5v6"/>',
+    pantheon: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.5"/><path class="d" d="M-10 1a10 9 0 0 1 20 0z"/><path class="s" d="M-13 2l13-6l13 6z"/><rect class="s" x="-12" y="2" width="24" height="9"/><path class="ln" d="M-9 3.5v6M-5.5 3.5v6M-2 3.5v6M1.5 3.5v6M5 3.5v6M8.5 3.5v6"/><rect class="s2" x="-13" y="11" width="26" height="2"/>',
+    castle: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><path class="s" d="M-14 0v11h28v-11"/><ellipse class="s" cx="0" cy="0" rx="14" ry="3.5"/><rect class="s2" x="-6" y="-8" width="12" height="8"/><path class="r" d="M-7 -8h14l-2 -3h-10z"/><path class="ln" d="M0 -11v-3M-14 5h28"/><circle class="g" cx="0" cy="-15.5" r="2"/>',
+    trevi: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s" x="-12" y="-10" width="24" height="11"/><path class="s2" d="M-3.5 1v-5.5a3.5 3.5 0 0 1 7 0v5.5z"/><path class="ln" d="M-12 -7h24M-8 -6v6M8 -6v6"/><path class="w" d="M-15 1h30l-3 9h-24z"/><path class="wl" d="M-9 5h5M2 6h6"/>',
+    steps: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s" x="-8" y="-9" width="16" height="6"/><path class="s" d="M-8 -9v-5l2.5-2.5l2.5 2.5v5zM3 -9v-5l2.5-2.5l2.5 2.5v5z"/><path class="s" d="M-5 -3h10l2 3h-14zM-8 0h16l2 3h-20zM-11 3h22l2 3h-26zM-14 6h28l2 4h-32z"/>',
+    obelisk: '<ellipse class="sh" cx="0" cy="13" rx="9" ry="2"/><path class="s" d="M-2 -12l2-3l2 3l1.5 20h-7z"/><rect class="s2" x="-6" y="8" width="12" height="4"/>',
+    column: '<ellipse class="sh" cx="0" cy="13" rx="8" ry="2"/><rect class="s" x="-3" y="-11" width="6" height="19"/><path class="ln" d="M-3 -7l6-2M-3 -2l6-2M-3 3l6-2"/><rect class="s2" x="-6" y="8" width="12" height="4"/><circle class="g" cx="0" cy="-13.5" r="2.3"/>',
+    temple: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.5"/><rect class="s2" x="-13" y="9" width="26" height="3"/><rect class="s" x="-10" y="-7" width="4" height="16"/><rect class="s" x="-2" y="-7" width="4" height="16"/><rect class="s" x="6" y="-7" width="4" height="16"/><path class="s" d="M-12 -7h20l-2 -3h-18z"/>',
+    museum: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><path class="r" d="M-14 -3l14-8l14 8z"/><rect class="s" x="-12" y="-3" width="24" height="12"/><path class="ln" d="M-8 -1v8M-3 -1v8M3 -1v8M8 -1v8"/><rect class="s2" x="-14" y="9" width="28" height="3"/>',
+    villa: '<ellipse class="sh" cx="0" cy="13" rx="16" ry="2.5"/><rect class="s" x="-13" y="-3" width="26" height="15"/><rect class="s" x="-15" y="-10" width="7" height="22"/><rect class="s" x="8" y="-10" width="7" height="22"/><path class="r" d="M-16 -10l4.5-3l4.5 3zM7 -10l4.5-3l4.5 3z"/><path class="s2" d="M-3 12v-6a3 3 0 0 1 6 0v6z"/><path class="ln" d="M-8 2h16"/>',
+    navona: '<rect class="s2" x="-7" y="-15" width="14" height="29" rx="7"/><circle class="w" cx="0" cy="-8" r="2.2"/><circle class="w" cx="0" cy="8" r="2.2"/><circle class="w" cx="0" cy="0" r="3.3"/><path class="s" d="M-1 0l1-10l1 10z"/>',
+    vittoriano: '<ellipse class="sh" cx="0" cy="13" rx="17" ry="2.6"/><path class="s" d="M-17 12h34v-4h-34z"/><path class="s" d="M-14 8v-11h28v11z"/><path class="ln" d="M-11 -2v9M-7 -2v9M-3 -2v9M1 -2v9M5 -2v9M9 -2v9"/><path class="s" d="M-15 -3h30v-3h-30z"/><path class="g" d="M-15 -6l1.5-5h3l1.5 5zM10 -6l1.5-5h3l1.5 5z"/><path class="s2" d="M-3 8v-5h6v5z"/>',
+    arch: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.4"/><rect class="s2" x="-13" y="-12" width="26" height="4"/><path class="s" d="M-13 12V-8H13V12H9V6A2 2 0 0 0 5 6V12H4V2A4 4 0 0 0 -4 2V12H-5V6A2 2 0 0 0 -9 6V12Z"/>',
+    pyramid: '<ellipse class="sh" cx="0" cy="13" rx="13" ry="2.4"/><path class="s" d="M-12 12L0 -14L12 12z"/><path class="s2" d="M0 -14L12 12H4z"/>',
+    theatre: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><path class="s" d="M-15 12v-14q15-8 30 0v14z"/><path class="ln" d="M-15 4q15-7 30 0M-12 -1v3M-7 -3v3M-2 -4v3M3 -4v3M8 -3v3M12 -1v3M-12 7v5M-7 6v6M-2 6v6M3 6v6M8 6v6M12 7v5"/>',
+    mausoleum: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.4"/><path class="s2" d="M-13 12v-8h26v8z"/><path class="gr" d="M-11 4q11-12 22 0z"/><path class="p2" d="M-2 -3q2-8 4 0z"/>',
+    palace: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s" x="-14" y="-6" width="28" height="18"/><rect class="r" x="-15" y="-9" width="30" height="3"/><path class="ln" d="M-10 -2h3M-2 -2h4M7 -2h3M-10 4h3M7 4h3"/><path class="s2" d="M-2.5 12v-6h5v6z"/>',
+    ruinsq: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s2" x="-14" y="6" width="28" height="6"/><rect class="s" x="-11" y="-4" width="3.5" height="10"/><rect class="s" x="-4" y="-1" width="3.5" height="7"/><rect class="s" x="3" y="-7" width="3.5" height="13"/><path class="k" d="M9 6c0-3 1-4 2.5-4l.5-2l1 1.5l1-1.5l.2 2.2c1 .8 1 2.5.3 3.8z"/>',
+    market: '<ellipse class="sh" cx="0" cy="12" rx="13" ry="2.5"/><path class="ln" d="M-10 0v11M10 0v11"/><rect class="s2" x="-11" y="3" width="22" height="5"/><circle class="r" cx="-6" cy="2" r="2"/><circle class="g" cx="-1" cy="2" r="2"/><circle class="p" cx="4" cy="2" r="2"/><path class="r" d="M-13 -1q13-13 26 0z"/><path class="ln" d="M-4.5 -1l2-7.5M4.5 -1l-2-7.5"/>',
+    mask: '<ellipse class="sh" cx="0" cy="13" rx="10" ry="2"/><circle class="s2" cx="0" cy="0" r="11.5"/><circle class="k" cx="-4" cy="-3" r="1.8"/><circle class="k" cx="4" cy="-3" r="1.8"/><ellipse class="k" cx="0" cy="5" rx="3" ry="2.2"/><path class="ln" d="M0 -1v3"/>',
+    keyhole: '<ellipse class="sh" cx="0" cy="13" rx="9" ry="2"/><path class="p2" d="M-8 12v-17a8 8 0 0 1 16 0v17z"/><circle class="k" cx="0" cy="0" r="2.4"/><path class="k" d="M-1 1.5h2l1 5h-4z"/>',
+    cannon: '<ellipse class="sh" cx="0" cy="12" rx="12" ry="2"/><path class="k" d="M-12 1l17-7l1.6 3.8l-17 7z"/><circle class="t" cx="-4" cy="5" r="5"/><circle class="k" cx="-4" cy="5" r="1.2"/><circle class="l" cx="10" cy="-8" r="2.8"/><circle class="l" cx="14" cy="-11.5" r="2"/>',
+    opera: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s" x="-13" y="-4" width="26" height="16"/><path class="s2" d="M-9 12v-6a3 3 0 0 1 6 0v6zM3 12v-6a3 3 0 0 1 6 0v6z"/><rect class="r" x="-14" y="-6" width="28" height="3"/><ellipse class="k" cx="1.3" cy="-9.5" rx="2.2" ry="1.6"/><path class="ln" d="M3.4 -9.5v-7l4 2"/>',
+    train: '<ellipse class="sh" cx="0" cy="13" rx="12" ry="2.2"/><rect class="r" x="-10" y="-12" width="20" height="20" rx="5"/><rect class="l" x="-7" y="-9" width="14" height="7" rx="1.5"/><circle class="g" cx="-5" cy="3" r="1.6"/><circle class="g" cx="5" cy="3" r="1.6"/><path class="ln" d="M-7 8l-3 4M7 8l3 4"/>',
+    domus: '<ellipse class="sh" cx="0" cy="11" rx="15" ry="2.5"/><path class="gr" d="M-15 10q15-22 30 0z"/><path class="k" d="M-4 10v-4a4 4 0 0 1 8 0v4z"/><path class="g" d="M8 -9l1.2 2.6l2.6 1.2l-2.6 1.2l-1.2 2.6l-1.2-2.6l-2.6-1.2l2.6-1.2z"/>',
+    baths: '<ellipse class="sh" cx="0" cy="13" rx="16" ry="2.5"/><path class="b" d="M-15 12v-16l3-2l3 2l2-1.5v17.5zM1 12v-21l4-2l3 2l4-1.5l3 1v21.5z"/><path class="s2" d="M-12.5 12v-7a3 3 0 0 1 6 0v7zM4 12v-9a4 4 0 0 1 8 0v9z"/>',
+    factory: '<ellipse class="sh" cx="0" cy="13" rx="14" ry="2.5"/><rect class="b" x="8" y="-14" width="4.5" height="26"/><path class="b" d="M-13 12v-13l5-5l5 5l5-5l5 5v13z"/><path class="s2" d="M-10 3h5v5h-5zM-2 3h5v5h-5z"/><circle class="l" cx="12" cy="-17" r="2.4"/><circle class="l" cx="15" cy="-20.5" r="1.8"/>',
+    gate: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s" x="-6" y="-4" width="12" height="16"/><path class="s2" d="M-3 12v-6a3 3 0 0 1 6 0v6z"/><path class="s" d="M-14 12v-17a4.5 4.5 0 0 1 9 0v17zM5 12v-17a4.5 4.5 0 0 1 9 0v17z"/>',
+    catacomb: '<ellipse class="sh" cx="0" cy="12" rx="13" ry="2.2"/><path class="gr" d="M-14 11q14-14 28 0z"/><path class="s" d="M-6 11v-5a6 6 0 0 1 12 0v5z"/><path class="k" d="M-3 11v-4a3 3 0 0 1 6 0v4z"/><path class="ln" d="M0 -6v-7M-2.5 -10.5h5"/>',
+    tomb: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><rect class="s2" x="-13" y="4" width="26" height="8"/><rect class="s" x="-10" y="-6" width="20" height="10"/><ellipse class="s" cx="0" cy="-6" rx="10" ry="2.5"/><path class="s" d="M-9 -8v-3h3v3zM-2 -8.5v-3h4v3zM6 -8v-3h3v3z"/><path class="ln" d="M-10 -1.5h20"/>',
+    ruin: '<ellipse class="sh" cx="0" cy="13" rx="15" ry="2.5"/><path class="b" d="M-14 12v-12l3-2l4 1l3-3l4 2v14z"/><path class="s2" d="M-11 12v-5a3 3 0 0 1 6 0v5z"/><rect class="s" x="5" y="-6" width="4" height="18"/><rect class="s" x="11" y="0" width="3.5" height="12"/>',
+    aqueduct: '<ellipse class="sh" cx="0" cy="13" rx="17" ry="2.5"/><path class="b" d="M-17 12V-6H17V12H13V3A3.5 3.5 0 0 0 6 3V12H3.5V3A3.5 3.5 0 0 0 -3.5 3V12H-6V3A3.5 3.5 0 0 0 -13 3V12Z"/><path class="ln" d="M-17 -2H17"/>',
+    church: '<ellipse class="sh" cx="0" cy="13" rx="13" ry="2.4"/><rect class="s" x="-11" y="0" width="16" height="12"/><path class="r" d="M-12 0l7-6l7 6z"/><rect class="s" x="5" y="-10" width="6" height="22"/><path class="r" d="M4.5 -10l3.5-4l3.5 4z"/><path class="s2" d="M-5 12v-5a2 2 0 0 1 4 0v5z"/>',
+    hotel: '<ellipse class="sh" cx="0" cy="0.5" rx="7" ry="2"/><path class="hz" d="M-13 -27h26v19h-9l-4 7.5l-4-7.5h-9z"/><path class="wb" d="M-8 -23v12M-8 -17h16M-8 -14h16v3"/><rect class="l" x="-6.5" y="-21.5" width="5.5" height="3" rx="1.2"/>',
+    pine: '<path class="t" d="M-1 10h2l-.5-9h-1z"/><path class="p" d="M-12 1q0-8 12-8q12 0 12 8q-12 3-24 0z"/>',
+    cyp: '<path class="t" d="M-1 11h2v-3h-2z"/><path class="p2" d="M0 -13q5 8 3 21h-6q-2-13 3-21z"/>'
+  };
+
+  // [icoon, plek, naam, icoon vanaf zoom, naam vanaf zoom]
+  var LM = [
+    ["colosseo", [41.8902,12.4922], "Colosseum", 0, 0],
+    ["temple", [41.8922,12.4860], "Forum Romanum", 1, 1],
+    ["museum", [41.8934,12.4826], "Capitool", 2, 2],
+    ["column", [41.8958,12.4843], "Trajanuszuil", 2, 2],
+    ["pantheon", [41.8986,12.4769], "Pantheon", 0, 1],
+    ["navona", [41.8992,12.4731], "Piazza Navona", 1, 2],
+    ["trevi", [41.9009,12.4833], "Trevi", 0, 1],
+    ["steps", [41.9058,12.4823], "Spaanse Trappen", 1, 1],
+    ["obelisk", [41.9107,12.4763], "Piazza del Popolo", 1, 1],
+    ["villa", [41.9142,12.4922], "Galleria Borghese", 0, 1],
+    ["dome", [41.9022,12.4539], "Sint-Pieter", 0, 1, "right"],
+    ["museum", [41.9065,12.4536], "Vaticaanse Musea", 1, 1],
+    ["castle", [41.9031,12.4663], "Castel Sant'Angelo", 0, 1],
+    ["market", [41.8957,12.4722], "Campo de' Fiori", 2, 2],
+    ["market", [41.8838,12.4740], "Porta Portese", 2, 2],
+    ["church", [41.8895,12.4699], "S. Maria in Trastevere", 2, 2],
+    ["cannon", [41.8917,12.4614], "Gianicolo", 1, 1],
+    ["mask", [41.8881,12.4815], "Bocca della Verità", 2, 2],
+    ["keyhole", [41.8829,12.4784], "Sleutelgat", 2, 2],
+    ["opera", [41.9006,12.4958], "Teatro dell'Opera", 2, 2],
+    ["train", [41.9010,12.5016], "Termini", 0, 0],
+    ["domus", [41.8913,12.4953], "Domus Aurea", 2, 2],
+    ["baths", [41.8790,12.4925], "Terme di Caracalla", 0, 1],
+    ["factory", [41.8667,12.4778], "Montemartini", 2, 2],
+    ["gate", [41.8735,12.5010], "Porta San Sebastiano", 2, 2],
+    ["catacomb", [41.8592,12.5106], "Catacomben", 1, 2],
+    ["tomb", [41.8525,12.5196], "Cecilia Metella", 1, 1],
+    ["ruin", [41.8298,12.5448], "Villa dei Quintili", 1, 1],
+    ["aqueduct", [41.8530,12.5600], "Aquaducten", 0, 0, "left"],
+    ["church", [41.9045,12.4945], "S. Maria della Vittoria", 2, 2],
+    ["vittoriano", [41.8946,12.4832], "Vittoriano", 0, 1],
+    ["arch", [41.8898,12.4906], "Arco di Costantino", 3, 3],
+    ["pyramid", [41.8763,12.4808], "Piramide", 1, 2],
+    ["theatre", [41.8918,12.4797], "Teatro di Marcello", 2, 2],
+    ["church", [41.8976,12.4984], "S. Maria Maggiore", 1, 2],
+    ["church", [41.8859,12.5057], "S. Giovanni in Laterano", 1, 2],
+    ["mausoleum", [41.9060,12.4762], "Mausoleo di Augusto", 2, 2],
+    ["palace", [41.8996,12.4870], "Quirinale", 2, 2],
+    ["villa", [41.9085,12.4813], "Villa Medici", 2, 2],
+    ["ruinsq", [41.8955,12.4768], "Largo Argentina", 2, 2],
+    ["palace", [41.8949,12.4710], "Palazzo Farnese", 3, 3],
+    ["gate", [41.9095,12.4890], "Porta Pinciana", 2, 2],
+    ["gate", [41.9093,12.5015], "Porta Pia", 2, 2],
+    ["gate", [41.8915,12.5150], "Porta Maggiore", 2, 2],
+    ["gate", [41.8845,12.5082], "Porta San Giovanni", 2, 2],
+    ["gate", [41.8848,12.4617], "Porta San Pancrazio", 2, 2]
+  ];
+  var TREES = [
+    ["pine",[41.9168,12.4835],0],["pine",[41.9180,12.4895],1],["pine",[41.9152,12.4952],1],["pine",[41.9100,12.4868],1],["pine",[41.9177,12.4930],1],
+    ["pine",[41.8960,12.4597],1],["pine",[41.8872,12.4640],1],["pine",[41.8938,12.4606],0],
+    ["pine",[41.8893,12.4850],1],["pine",[41.8878,12.4888],1],
+    ["pine",[41.8845,12.4935],1],["pine",[41.8778,12.4956],1],["pine",[41.8815,12.4967],0],
+    ["pine",[41.8932,12.4980],1],
+    ["pine",[41.9055,12.4486],1],["pine",[41.9033,12.4480],0],
+    ["cyp",[41.8692,12.5038],1],["cyp",[41.8622,12.5088],1],["cyp",[41.8556,12.5168],1],["cyp",[41.8476,12.5272],0],["cyp",[41.8402,12.5348],1],["cyp",[41.8352,12.5402],0],
+    ["pine",[41.8500,12.5250],0],["pine",[41.8580,12.5640],1],["pine",[41.8470,12.5642],1],
+    ["pine",[41.8875,12.4440],1],["pine",[41.8855,12.4472],0],["pine",[41.8892,12.4482],1],["pine",[41.8822,12.4452],2],
+    ["pine",[41.8848,12.4955],1],["pine",[41.8998,12.4895],2],["pine",[41.9083,12.4826],2],["pine",[41.8872,12.4860],2],
+    ["pine",[41.8905,12.4602],1],["pine",[41.8985,12.4604],2],["pine",[41.8945,12.4857],2],["pine",[41.8926,12.4889],2],
+    ["pine",[41.8605,12.5135],1],["cyp",[41.8512,12.5228],1],["pine",[41.9150,12.4812],1],["pine",[41.9125,12.4905],1],["pine",[41.9060,12.4500],2]
+  ];
+  // [tekst, plek, stijl, zichtbaar vanaf zoom]
+  var NAMES = [
+    ["Vaticaanstad",[41.9041,12.4500],"lb-area",0],
+    ["Villa Borghese",[41.9172,12.4862],"lb-area",0],
+    ["Parco dell'Appia Antica",[41.8430,12.5330],"lb-area",0],
+    ["Tevere",[41.9165,12.4688],"lb-river",1],
+    ["Tevere",[41.8700,12.4703],"lb-river",1],
+    ["TRASTEVERE",[41.8866,12.4694],"lb-dist",1],
+    ["MONTI",[41.8978,12.4935],"lb-dist",1],
+    ["TESTACCIO",[41.8758,12.4738],"lb-dist",1],
+    ["BORGO",[41.9056,12.4598],"lb-dist",1],
+    ["PRATI",[41.9100,12.4635],"lb-dist",1],
+    ["ESQUILINO",[41.8968,12.5022],"lb-dist",2],
+    ["OSTIENSE",[41.8620,12.4812],"lb-dist",2],
+    ["Palatino",[41.8876,12.4857],"lb-hill",1],
+    ["Aventino",[41.8838,12.4808],"lb-hill",1],
+    ["Celio",[41.8858,12.4940],"lb-hill",2],
+    ["Circo Massimo",[41.8856,12.4852],"lb-hill",2],
+    ["Isola Tiberina",[41.8915,12.4778],"lb-hill",3],
+    ["FLAMINIO",[41.9185,12.4742],"lb-dist",1],
+    ["SAN LORENZO",[41.8978,12.5148],"lb-dist",1],
+    ["MONTEVERDE",[41.8800,12.4598],"lb-dist",1],
+    ["AURELIO",[41.8945,12.4488],"lb-dist",2]
+  ];
+
+  /* --- Routes per dag --- */
+  var HOTEL = [41.8988,12.4561], STN_SP = [41.8968,12.4548], STN_TR = [41.8722,12.4675];
+  // Bus 64: hotel – Corso Vittorio – Largo Argentina – Piazza Venezia – Via Nazionale – Termini
+  var B64 = [HOTEL, [41.9003,12.4568], [41.9010,12.4600], [41.9007,12.4650], [41.8988,12.4688], [41.8975,12.4725], [41.8957,12.4775], [41.8962,12.4825], [41.8978,12.4870], [41.9000,12.4920], [41.9028,12.4962], [41.9010,12.5016]];
+  function b64(i, j) { return i <= j ? B64.slice(i, j + 1) : B64.slice(j, i + 1).reverse(); }
+  var COLORS = { za10: "--r1", zo11: "--r2", ma12: "--r3", di13: "--r4", wo14: "--r5", do15: "--r6", vr16: "--r7", za17: "--r8" };
+  var ROUTES = {
+    za10: { badge: 0, fitHotel: true,
+      start: { t: "17:20", txt: "Een paar minuten lopen naar het Sint-Pietersplein", parts: [{ m: "walk", pts: [HOTEL, [41.9003,12.4568], [41.9015,12.4580], [41.9022,12.4575]] }] },
+      end: { t: "23:00", txt: "Taxi terug naar het hotel, ±15 minuten", parts: [{ m: "ov", pts: [[41.9009,12.4833]].concat(b64(7, 0)) }] },
+      stops: [
+      { ll: [41.9022,12.4575], t: "17:30", n: "Sint-Pietersplein bij avond" },
+      { ll: [41.9014,12.4666], t: "18:00", n: "Via della Conciliazione & Ponte Sant'Angelo", via: [[41.9024,12.4600],[41.9026,12.4648]] },
+      { ll: [41.8992,12.4731], t: "18:30", n: "Piazza Navona", via: [[41.9002,12.4706]] },
+      { ll: [41.8986,12.4769], t: "19:00", n: "Pantheon van buiten", via: [[41.8996,12.4750]] },
+      { ll: [41.8957,12.4722], t: "20:00", n: "Diner rond Campo de' Fiori", via: [[41.8970,12.4748]] },
+      { ll: [41.9009,12.4833], t: "22:15", n: "Trevifontein bij nacht", via: [[41.8962,12.4752],[41.8975,12.4790],[41.8998,12.4815]] }
+    ]},
+    zo11: { badge: 2,
+      start: { t: "08:00", txt: "Trein FL3 of FL5 van Roma San Pietro naar Roma Trastevere, dan 10 minuten lopen (of taxi)", parts: [{ m: "walk", pts: [HOTEL, STN_SP] }, { m: "ov", pts: [STN_SP, [41.8810,12.4615], STN_TR] }, { m: "walk", pts: [STN_TR, [41.8785,12.4705], [41.8838,12.4740]] }] },
+      end: { t: "Avond", txt: "Taxi terug naar het hotel, ±15 minuten", parts: [{ m: "ov", pts: [[41.8780,12.4760], [41.8850,12.4712], [41.8935,12.4650], HOTEL] }] },
+      stops: [
+      { ll: [41.8838,12.4740], t: "08:30", n: "Vlooienmarkt Porta Portese" },
+      { ll: [41.8895,12.4699], t: "10:00", n: "Santa Maria in Trastevere", via: [[41.8862,12.4722]] },
+      { ll: [41.8917,12.4614], t: "11:30", n: "Gianicolo (kanonschot 12:00)", via: [[41.8890,12.4672],[41.8886,12.4647]] },
+      { ll: [41.8881,12.4815], t: "15:00", n: "Bocca della Verità", via: [[41.8898,12.4660],[41.8893,12.4725],[41.8892,12.4775],[41.8889,12.4800]] },
+      { ll: [41.8851,12.4797], t: "15:45", n: "Giardino degli Aranci & Santa Sabina", via: [[41.8866,12.4812]] },
+      { ll: [41.8829,12.4784], t: "16:30", n: "Sleutelgat op de Aventijn" },
+      { ll: [41.8667,12.4778], t: "17:00", n: "Centrale Montemartini", opt: true, m: "ov", via: [[41.8763,12.4810]] },
+      { ll: [41.8780,12.4760], t: "20:00", n: "Diner in Testaccio", m: "ov" }
+    ]},
+    ma12: { badge: 0,
+      start: { t: "07:45", txt: "Bus 64 naar Piazza Venezia, dan 10 minuten lopen (taxi: ±15 min)", parts: [{ m: "ov", pts: b64(0, 7) }, { m: "walk", pts: [[41.8962,12.4825], [41.8935,12.4870], [41.8902,12.4922]] }] },
+      end: { t: "Avond", txt: "Bus 64 vanaf Via Nazionale, rechtstreeks naar het hotel", parts: [{ m: "walk", pts: [[41.8962,12.4948], [41.8985,12.4930], [41.9000,12.4920]] }, { m: "ov", pts: b64(9, 0) }] },
+      stops: [
+      { ll: [41.8902,12.4922], t: "08:30", n: "Colosseum" },
+      { ll: [41.8922,12.4862], t: "10:30", n: "Forum Romanum", via: [[41.8907,12.4898]] },
+      { ll: [41.8888,12.4870], t: "12:00", n: "Palatijn" },
+      { ll: [41.8950,12.4925], t: "13:30", n: "Lunch in Monti", via: [[41.8905,12.4885],[41.8918,12.4905],[41.8935,12.4912]] },
+      { ll: [41.8958,12.4843], t: "15:00", n: "Keizerfora & Trajanuszuil", via: [[41.8948,12.4885]] },
+      { ll: [41.8934,12.4828], t: "15:45", n: "Capitolijnse Musea" },
+      { ll: [41.8928,12.4843], t: "18:15", n: "Uitzicht over het Forum" },
+      { ll: [41.8962,12.4948], t: "20:00", n: "Diner in Monti", via: [[41.8940,12.4868],[41.8952,12.4905]] }
+    ]},
+    di13: { badge: 0, fitHotel: true,
+      start: { t: "07:20", txt: "±20 minuten lopen over het Sint-Pietersplein en langs de muren", parts: [{ m: "walk", pts: [HOTEL, [41.9003,12.4568], [41.9015,12.4583], [41.9030,12.4590], [41.9048,12.4593], [41.9064,12.4590], [41.9070,12.4565], [41.9065,12.4536]] }] },
+      end: { t: "Avond", txt: "25 minuten lopen, of bus 64 vanaf Corso Vittorio Emanuele", parts: [{ m: "walk", pts: [[41.8992,12.4731], [41.8988,12.4700], [41.9005,12.4652], [41.9010,12.4600], [41.9003,12.4568], HOTEL] }] },
+      stops: [
+      { ll: [41.9065,12.4536], t: "08:00", n: "Vaticaanse Musea & Sixtijnse Kapel" },
+      { ll: [41.9022,12.4545], t: "11:30", n: "Sint-Pietersbasiliek & koepel", via: [[41.9070,12.4570],[41.9062,12.4590],[41.9036,12.4592],[41.9022,12.4575]] },
+      { ll: [41.9045,12.4612], t: "14:00", n: "Lunch in Borgo", via: [[41.9030,12.4592]] },
+      { ll: [41.9031,12.4663], t: "15:30", n: "Castel Sant'Angelo" },
+      { ll: [41.9014,12.4666], t: "17:30", n: "Ponte Sant'Angelo" },
+      { ll: [41.9002,12.4706], t: "17:45", n: "Via dei Coronari", via: [[41.9008,12.4685]] },
+      { ll: [41.8992,12.4731], t: "18:30", n: "Piazza Navona bij zonsondergang" }
+    ]},
+    wo14: { badge: 0,
+      start: { t: "07:30", txt: "Bus 64 naar Piazza Venezia, dan 10 minuten lopen via Via del Corso", parts: [{ m: "ov", pts: b64(0, 7) }, { m: "walk", pts: [[41.8962,12.4825], [41.8990,12.4812], [41.9009,12.4833]] }] },
+      end: { t: "Avond", txt: "Bus 64 vanaf Largo Argentina", parts: [{ m: "walk", pts: [[41.8921,12.4792], [41.8938,12.4782], [41.8957,12.4775]] }, { m: "ov", pts: b64(6, 0) }] },
+      stops: [
+      { ll: [41.9009,12.4833], t: "08:00", n: "Trevifontein (vóór 9:00 gratis)" },
+      { ll: [41.8986,12.4769], t: "09:00", n: "Pantheon", via: [[41.9002,12.4805],[41.8992,12.4785]] },
+      { ll: [41.8990,12.4797], t: "10:00", n: "Sant'Ignazio & Piazza di Pietra" },
+      { ll: [41.8995,12.4747], t: "10:45", n: "San Luigi dei Francesi", via: [[41.8996,12.4775]] },
+      { ll: [41.8992,12.4731], t: "11:30", n: "Piazza Navona" },
+      { ll: [41.8957,12.4722], t: "12:15", n: "Campo de' Fiori & lunch", via: [[41.8975,12.4728]] },
+      { ll: [41.8952,12.4692], t: "14:30", n: "Via Giulia", via: [[41.8947,12.4710]] },
+      { ll: [41.8927,12.4775], t: "15:00", n: "Joods Getto & Portico d'Ottavia", via: [[41.8940,12.4705],[41.8932,12.4740]] },
+      { ll: [41.8955,12.4768], t: "16:00", n: "Largo di Torre Argentina" },
+      { ll: [41.8979,12.4814], t: "16:45", n: "Galleria Doria Pamphilj", opt: true, via: [[41.8968,12.4795]] },
+      { ll: [41.8921,12.4792], t: "19:30", n: "Diner in het Getto", via: [[41.8955,12.4815],[41.8935,12.4802]] }
+    ]},
+    do15: { badge: 0,
+      start: { t: "08:00", txt: "Taxi naar de Galleria Borghese, ±20 minuten", parts: [{ m: "ov", pts: [HOTEL, [41.9007,12.4650], [41.9060,12.4722], [41.9108,12.4790], [41.9142,12.4922]] }] },
+      end: { t: "Avond", txt: "Bus 64 vanaf Via Nazionale, rechtstreeks naar het hotel", parts: [{ m: "walk", pts: [[41.9006,12.4958], [41.9000,12.4920]] }, { m: "ov", pts: b64(9, 0) }] },
+      stops: [
+      { ll: [41.9142,12.4922], t: "09:00", n: "Galleria Borghese" },
+      { ll: [41.9128,12.4823], t: "11:15", n: "Villa Borghese & meertje", via: [[41.9145,12.4880],[41.9138,12.4848]] },
+      { ll: [41.9113,12.4797], t: "12:15", n: "Pincio-terras" },
+      { ll: [41.9113,12.4767], t: "12:45", n: "Santa Maria del Popolo" },
+      { ll: [41.9081,12.4795], t: "14:45", n: "Via Margutta", via: [[41.9098,12.4778]] },
+      { ll: [41.9058,12.4823], t: "15:15", n: "Spaanse Trappen & Via Condotti" },
+      { ll: [41.9045,12.4945], t: "16:15", n: "Santa Maria della Vittoria", via: [[41.9062,12.4836],[41.9052,12.4862],[41.9038,12.4886],[41.9045,12.4920]] },
+      { ll: [41.9006,12.4958], t: "18:00", n: "Falstaff, Teatro dell'Opera", opt: true, via: [[41.9028,12.4958]] }
+    ]},
+    vr16: { badge: 4,
+      start: { t: "08:15", txt: "Taxi (±20 min), of bus 64 tot Piazza Venezia en 20 minuten lopen", parts: [{ m: "ov", pts: b64(0, 7).concat([[41.8930,12.4890], [41.8913,12.4953]]) }] },
+      end: { t: "Avond", txt: "Metro A van Giulio Agricola naar Ottaviano (±30 min), dan ±20 minuten lopen; of taxi", parts: [{ m: "ov", pts: [[41.8530,12.5600], [41.8858,12.5085], [41.9010,12.5016], [41.9028,12.4962], [41.9037,12.4886], [41.9068,12.4830], [41.9115,12.4760], [41.9142,12.4650], [41.9093,12.4585]] }, { m: "walk", pts: [[41.9093,12.4585], [41.9064,12.4590], [41.9030,12.4590], [41.9003,12.4568], HOTEL] }] },
+      stops: [
+      { ll: [41.8913,12.4953], t: "09:00", n: "Domus Aurea" },
+      { ll: [41.8790,12.4925], t: "11:00", n: "Terme di Caracalla", m: "ov", via: [[41.8862,12.4905]] },
+      { ll: [41.8652,12.5036], t: "12:30", n: "Infopunt Appia: fietsen huren", m: "ov", via: [[41.8760,12.4985],[41.8735,12.5010]] },
+      { ll: [41.8592,12.5106], t: "14:00", n: "Catacomben van San Callisto", m: "fiets" },
+      { ll: [41.8525,12.5196], t: "15:00", n: "Graf van Cecilia Metella", m: "fiets" },
+      { ll: [41.8298,12.5448], t: "16:00", n: "Villa dei Quintili", m: "fiets" },
+      { ll: [41.8530,12.5600], t: "17:45", n: "Parco degli Acquedotti", opt: true, m: "ov" }
+    ]},
+    za17: { badge: 0, fitHotel: true,
+      start: { t: "Ochtend", txt: "Uitchecken vóór 11:00, dan 25 minuten lopen of bus 64", parts: [{ m: "walk", pts: [HOTEL, [41.9003,12.4568], [41.9010,12.4600], [41.9005,12.4652], [41.8988,12.4688], [41.8970,12.4712], [41.8957,12.4722]] }] },
+      end: { t: "Middag", txt: "Bagage ophalen, dan taxi (vast tarief €55) of trein naar Fiumicino", parts: [{ m: "ov", pts: [[41.8957,12.4722], [41.8975,12.4725]].concat(b64(5, 0).slice(1)) }] },
+      stops: [
+      { ll: [41.8957,12.4722], t: "Ochtend", n: "Markt op Campo de' Fiori" }
+    ]}
+  };
+  var MODE_TXT = { ov: "met metro, bus of taxi", fiets: "op de fiets" };
+  var DAYINFO = {}; DAYS.forEach(function (d) { DAYINFO[d.id] = d; });
+  var ORDER = DAYS.map(function (d) { return d.id; });
+
+  /* --- Opbouw --- */
+  var svg = document.getElementById("map"), frame = document.getElementById("mapframe");
+  var SC = [], ST = [];
+  function scaled(parent, p, b, kind, min) {
+    var o = E("g", { transform: "translate(" + fx(p) + ")" }, parent);
+    var i = E("g", {}, o);
+    var rec = { el: i, b: b || 1, kind: kind || "" };
+    SC.push(rec);
+    if (min) o.setAttribute("data-min", String(min));
+    return { outer: o, inner: i, rec: rec };
+  }
+  function stroked(parent, d, cls, w, dash) {
+    var e = E("path", { d: d, "class": cls }, parent);
+    ST.push({ el: e, w: w, dash: dash || null });
+    return e;
+  }
+
+  var base = E("g", {}, svg);
+  E("rect", { x: -4000, y: -4000, width: W + 8000, height: H + 8000, "class": "m-land" }, base);
+  AREAS.forEach(function (a) { E("path", { d: smooth(PP(a[1]), true), "class": "m-" + a[0] }, base); });
+  E("path", { d: smooth(PP(RIVER)), "class": "m-river-edge" }, base);
+  E("path", { d: smooth(PP(RIVER)), "class": "m-river" }, base);
+  E("path", { d: smooth(PP(ISLAND), true), "class": "m-island" }, base);
+  E("path", { d: smooth(PP(POND), true), "class": "m-water" }, base);
+  function ellipse(la, lo, rx, ry) {
+    var out = [];
+    for (var a = 0; a < 12; a++) { var t = a / 12 * Math.PI * 2; out.push([la + Math.sin(t) * ry / KY, lo + Math.cos(t) * rx / KX]); }
+    return out;
+  }
+  function offsetPts(pts, d) {
+    return pts.map(function (p, i) {
+      var a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+      var dx = b[0] - a[0], dy = b[1] - a[1], L = Math.sqrt(dx * dx + dy * dy) || 1;
+      return [p[0] - dy / L * d, p[1] + dx / L * d];
+    });
+  }
+  var SQ = [];
+  function sq(el, w, dash) { SQ.push({ el: el, w: w, dash: dash || null }); return el; }
+  PLAZAS.forEach(function (pz) { E("path", { d: smooth(PP(ellipse(pz[0], pz[1], pz[2], pz[3])), true), "class": pz[4] ? "m-ruin" : "m-plaza" }, base); });
+  var RPC = PP(RIVER.slice(1, 20));
+  var LUNGO = [offsetPts(RPC, 19), offsetPts(RPC, -19)].map(function (p) { return smooth(p); });
+  var PLANES = [offsetPts(RPC, 13.5), offsetPts(RPC, -13.5)].map(function (p) { return smooth(p); });
+  STREETS.forEach(function (r) { sq(E("path", { d: smooth(PP(r[3])), "class": "m-road-edge" + (r[2] === "b" ? " minor" : "") }, base), r[2] === "b" ? 6.2 : 9); });
+  LUNGO.forEach(function (d) { sq(E("path", { d: d, "class": "m-road-edge minor" }, base), 6.2); });
+  sq(E("path", { d: poly(PP(APPIA)), "class": "m-road-edge" }, base), 9);
+  STREETS.forEach(function (r) { sq(E("path", { d: smooth(PP(r[3])), "class": "m-road" + (r[2] === "b" ? " minor" : "") }, base), r[2] === "b" ? 4 : 6); });
+  LUNGO.forEach(function (d) { sq(E("path", { d: d, "class": "m-road minor" }, base), 4); });
+  sq(E("path", { d: poly(PP(APPIA)), "class": "m-appia" }, base), 6, [3, 2.5]);
+  PATHS.forEach(function (p) { sq(E("path", { d: smooth(PP(p)), "class": "m-path" }, base), 2.2, [4, 3]); });
+  PLANES.forEach(function (d) { sq(E("path", { d: d, "class": "m-plane" }, base), 5, [0, 10]); });
+  var RPA = PP(RIVER);
+  function riverAt(q) {
+    var best = null;
+    for (var i = 0; i < RPA.length - 1; i++) {
+      var a = RPA[i], b = RPA[i + 1], dx = b[0] - a[0], dy = b[1] - a[1], L2 = dx * dx + dy * dy;
+      var t = Math.max(0, Math.min(1, ((q[0] - a[0]) * dx + (q[1] - a[1]) * dy) / L2));
+      var px = a[0] + t * dx, py = a[1] + t * dy, dd = (q[0] - px) * (q[0] - px) + (q[1] - py) * (q[1] - py);
+      if (!best || dd < best.dd) { var L = Math.sqrt(L2); best = { p: [px, py], t: [dx / L, dy / L], dd: dd }; }
+    }
+    return best;
+  }
+  var BR = BRIDGES.map(function (br) {
+    var r = riverAt(P(br[1])), n = [-r.t[1], r.t[0]], c = r.p;
+    var d = "M" + fx([c[0] - n[0] * 21, c[1] - n[1] * 21]) + "L" + fx([c[0] + n[0] * 21, c[1] + n[1] * 21]);
+    sq(E("path", { d: d, "class": "m-bridge-edge" }, base), 10);
+    sq(E("path", { d: d, "class": "m-bridge" + (br[2] === "stone" ? " stone" : "") }, base), 6.5);
+    return { name: br[0], c: c, t: r.t };
+  });
+  WALLS.forEach(function (w) { sq(E("path", { d: poly(PP(w)), "class": "m-wall" }, base), 3.2, [7, 2.2]); });
+
+  // Straatnamen langs de weg
+  var defs = E("defs", {}, svg), gStreet = E("g", {}, svg), STL = [];
+  STREETS.forEach(function (r, i) {
+    if (!r[0]) return;
+    var pts = PP(r[3]);
+    if (pts[0][0] > pts[pts.length - 1][0]) pts = pts.slice().reverse();
+    var len = 0;
+    for (var j = 1; j < pts.length; j++) len += Math.sqrt(Math.pow(pts[j][0] - pts[j - 1][0], 2) + Math.pow(pts[j][1] - pts[j - 1][1], 2));
+    E("path", { id: "strt" + i, d: smooth(pts) }, defs);
+    var t = E("text", { "class": "lb-street", "data-min": String(r[1]), "dominant-baseline": "central" }, gStreet);
+    var tp = E("textPath", { href: "#strt" + i, startOffset: "50%" }, t);
+    tp.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", "#strt" + i);
+    tp.textContent = r[0];
+    STL.push({ el: t, len: len, n: r[0].length });
+  });
+
+  var gNames = E("g", {}, svg), gMetro = E("g", {}, svg), gDeco = E("g", {}, svg), gIcons = E("g", {}, svg);
+  BR.forEach(function (b) {
+    var s = scaled(gNames, b.c, 1, "name", 3);
+    var t = E("text", { x: (b.t[0] * 30).toFixed(1), y: (b.t[1] * 30 + 3.5).toFixed(1), "class": "lb-bridge" }, s.inner); t.textContent = b.name;
+  });
+  METRO.forEach(function (m) {
+    var s = scaled(gMetro, P(m[1]), 1, "metro", 1);
+    var g = E("g", { "class": "metro" }, s.inner);
+    if (m[2].length === 1) E("circle", { r: 6.5, "class": "m" + m[2] }, g);
+    else {
+      E("path", { d: "M0 -6.5A6.5 6.5 0 0 0 0 6.5Z", "class": "m" + m[2][0] }, g);
+      E("path", { d: "M0 -6.5A6.5 6.5 0 0 1 0 6.5Z", "class": "m" + m[2][1] }, g);
+      E("circle", { r: 6.5, "class": "mo" }, g);
+    }
+    var mt = E("text", { x: 0, y: 3, "class": "mm" }, g); mt.textContent = "M";
+    if (m[0]) { var lb = E("text", { x: 10, y: 3.5, "class": "lb-metro", "data-min": "2" }, s.inner); lb.textContent = m[0]; }
+  });
+  var gWeek = E("g", {}, svg), gDays = E("g", {}, svg), gLabels = E("g", {}, svg), gHotel = E("g", {}, svg), gWeekTop = E("g", {}, svg), gStops = E("g", {}, svg), gTop = E("g", {}, svg);
+  NAMES.forEach(function (nm) {
+    var s = scaled(gNames, P(nm[1]), 1, "name", nm[3]);
+    var t = E("text", { x: 0, y: 4, "class": nm[2] }, s.inner); t.textContent = nm[0];
+  });
+  (function () { // wegwijzer naar Fiumicino en Ostia
+    var s = scaled(gNames, [W * 0.035, H * 0.86], 1, "name", 0);
+    var t = E("text", { x: 0, y: 0, "class": "lb-sign" }, s.inner);
+    var a = E("tspan", { x: 0, dy: 0 }, t); a.textContent = "↙ Fiumicino";
+    var b = E("tspan", { x: 12, dy: 14 }, t); b.textContent = "& Ostia Antica";
+  })();
+  TREES.forEach(function (tr) {
+    var s = scaled(gDeco, P(tr[1]), 0.72, "tree", tr[2]);
+    var g = E("g", { "class": "ico" }, s.inner); g.innerHTML = IC[tr[0]];
+  });
+  var LMP = [];
+  LM.forEach(function (l) {
+    var p = P(l[1]); LMP.push(p);
+    var s = scaled(gIcons, p, 1, "icon", l[3]);
+    var g = E("g", { "class": "ico" }, s.inner); g.innerHTML = IC[l[0]];
+    var ls = scaled(gLabels, p, 1, "icon", Math.max(l[3], l[4]));
+    var t = E("text", l[5] === "left" ? { x: -19, y: 4, "class": "lb", style: "text-anchor:end" } : l[5] === "right" ? { x: 19, y: 4, "class": "lb", style: "text-anchor:start" } : { x: 0, y: 27, "class": "lb" }, ls.inner);
+    t.textContent = l[2];
+  });
+
+  // Hotel
+  var hs = scaled(gHotel, P(HOTEL), 1, "hotel");
+  hs.outer.setAttribute("class", "hotel");
+  var hg = E("g", { "class": "ico" }, hs.inner); hg.innerHTML = IC.hotel;
+  var htx = E("text", { x: 10, y: 13, "class": "lb lb-hotel", style: "text-anchor:start" }, hs.inner); htx.textContent = "Domus Fornaci";
+
+  // Weekoverzicht: alle routes dun, met een dagbadge
+  var DASH = { walk: [0.1, 7.5], ov: [9, 6], fiets: [10, 4, 1, 4] };
+  var WIDTH = { walk: 4.6, ov: 3, fiets: 3.4 };
+  var dayLayers = {}, stopRecs = {}, dayBox = {};
+
+  function segPath(a, s) {
+    var pts = [a].concat(PP(s.via || [])).concat([P(s.ll)]);
+    return (s.m === "ov") ? poly(pts) : smooth(pts);
+  }
+  ORDER.forEach(function (id) {
+    var R = ROUTES[id], col = "var(" + COLORS[id] + ")";
+    var box = [Infinity, Infinity, -Infinity, -Infinity];
+    function grow(p) { box[0] = Math.min(box[0], p[0]); box[1] = Math.min(box[1], p[1]); box[2] = Math.max(box[2], p[0]); box[3] = Math.max(box[3], p[1]); }
+    R.stops.forEach(function (s) { grow(P(s.ll)); (s.via || []).forEach(function (v) { grow(P(v)); }); });
+    if (R.fitHotel) grow(P(HOTEL));
+    dayBox[id] = box;
+
+    // week
+    var wg = E("g", { "class": "wk", "data-day": id, style: "--c:" + col }, gWeek);
+    var segs = [];
+    for (var i = 1; i < R.stops.length; i++) segs.push({ d: segPath(P(R.stops[i - 1].ll), R.stops[i]), m: R.stops[i].m || "walk" });
+    segs.forEach(function (sg) { stroked(wg, sg.d, "rt-halo", 6); });
+    segs.forEach(function (sg) { stroked(wg, sg.d, "rt", sg.m === "walk" ? 2.6 : 2, sg.m === "walk" ? null : [6, 4]); });
+    var wgt = E("g", { "class": "wk", "data-day": id, style: "--c:" + col }, gWeekTop);
+    var bs = scaled(wgt, P(R.stops[R.badge].ll), 1, "badge");
+    E("rect", { x: -20, y: -38, width: 40, height: 20, rx: 10, "class": "bdg" }, bs.inner);
+    var bt = E("text", { x: 0, y: -24, "class": "bdg-t" }, bs.inner); bt.textContent = DAYINFO[id].ab + " " + DAYINFO[id].n;
+
+    // dag
+    var dg = E("g", { display: "none", style: "--c:" + col }, gDays);
+    var dgs = E("g", { display: "none", style: "--c:" + col }, gStops);
+    dayLayers[id] = [dg, dgs];
+    var lg = E("g", { "class": "legs" }, dg);
+    var legParts = [];
+    [R.start, R.end].forEach(function (L) { if (L) L.parts.forEach(function (pt) { legParts.push({ d: pt.m === "ov" ? poly(PP(pt.pts)) : smooth(PP(pt.pts)), m: pt.m }); }); });
+    legParts.forEach(function (pt) { stroked(lg, pt.d, "rt-halo", pt.m === "walk" ? 10 : 8); });
+    legParts.forEach(function (pt) { stroked(lg, pt.d, "rt", WIDTH[pt.m], DASH[pt.m]); });
+    segs.forEach(function (sg) { stroked(dg, sg.d, "rt-halo", sg.m === "walk" ? 10 : 8); });
+    segs.forEach(function (sg) { stroked(dg, sg.d, "rt", WIDTH[sg.m], DASH[sg.m]); });
+    stopRecs[id] = [];
+    R.stops.forEach(function (s, idx) {
+      var p = P(s.ll);
+      var near = LMP.some(function (q) { return Math.abs(q[0] - p[0]) < 11 && Math.abs(q[1] - p[1]) < 11; });
+      var dx = near ? 14 : 0, dy = near ? -14 : 0;
+      var sc = scaled(dgs, p, 1, "stop");
+      sc.outer.setAttribute("class", "stop" + (s.opt ? " opt" : ""));
+      sc.outer.setAttribute("data-i", String(idx));
+      if (near) E("circle", { cx: 0, cy: 0, r: 3.2, "class": "pin" }, sc.inner);
+      E("circle", { cx: dx, cy: dy, r: 11, "class": "main" }, sc.inner);
+      var tx = E("text", { x: dx, y: dy + 4, "class": "" }, sc.inner); tx.textContent = String(idx + 1);
+      stopRecs[id].push({ rec: sc.rec, outer: sc.outer, dx: dx, dy: dy, p: p });
+    });
+  });
+
+  // Callout voor de gekozen stop
+  var call = scaled(gTop, [0, 0], 1, "call");
+  call.outer.setAttribute("class", "callout"); call.outer.setAttribute("display", "none");
+  var cRect = E("rect", { rx: 12, height: 24 }, call.inner);
+  var cText = E("text", {}, call.inner);
+
+  /* --- Weergave --- */
+  var vb = { x: 0, y: 0, w: W, h: H }, zNow = -1, anim = null;
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  function dims() { return { w: svg.clientWidth || 600, h: svg.clientHeight || 640 }; }
+  function apply() {
+    svg.setAttribute("viewBox", vb.x.toFixed(1) + " " + vb.y.toFixed(1) + " " + vb.w.toFixed(1) + " " + vb.h.toFixed(1));
+    var d = dims(), k = Math.min(d.w / vb.w, d.h / vb.h), u = 1 / k;
+    var z = k < 0.55 ? 0 : k < 1.1 ? 1 : k < 2.2 ? 2 : 3;
+    if (z !== zNow) { svg.setAttribute("data-z", String(z)); zNow = z; }
+    var f = z === 0 ? 0.8 : 1, i;
+    for (i = 0; i < SC.length; i++) {
+      var s = SC[i], b = s.b * ((s.kind === "icon" || s.kind === "tree") ? f : 1);
+      s.el.setAttribute("transform", "scale(" + (u * b).toFixed(4) + ")");
+    }
+    var g = Math.min(1, Math.sqrt(u));
+    if (g !== apply.lastG) {
+      apply.lastG = g;
+      for (i = 0; i < SQ.length; i++) {
+        var q = SQ[i];
+        q.el.style.strokeWidth = (q.w * g).toFixed(3);
+        if (q.dash) q.el.style.strokeDasharray = q.dash.map(function (v) { return (v * g).toFixed(3); }).join(" ");
+      }
+    }
+    for (i = 0; i < STL.length; i++) {
+      var sl = STL[i], fs = 9.5 * u;
+      sl.el.setAttribute("font-size", fs.toFixed(3));
+      sl.el.setAttribute("stroke-width", (2.6 * u).toFixed(3));
+      sl.el.setAttribute("display", sl.len > sl.n * fs * 0.58 + 10 * u ? "inline" : "none");
+    }
+    for (i = 0; i < ST.length; i++) {
+      var t = ST[i];
+      t.el.setAttribute("stroke-width", (t.w * u).toFixed(3));
+      if (t.dash) t.el.setAttribute("stroke-dasharray", t.dash.map(function (v) { return (v * u).toFixed(3); }).join(" "));
+    }
+  }
+  function clamp(v) {
+    var d = dims(), a = d.h / d.w, m = 60;
+    var maxW = Math.max(W + 2 * m, (H + 2 * m) / a), minW = 120;
+    var cx = v.x + v.w / 2, cy = v.y + v.h / 2;
+    var w = Math.min(maxW, Math.max(minW, v.w)), h = w * a;
+    var x = cx - w / 2, y = cy - h / 2;
+    x = (w >= W + 2 * m) ? (W - w) / 2 : Math.min(Math.max(x, -m), W + m - w);
+    y = (h >= H + 2 * m) ? (H - h) / 2 : Math.min(Math.max(y, -m), H + m - h);
+    return { x: x, y: y, w: w, h: h };
+  }
+  function fit(b, pad, minW) {
+    var d = dims(), a = d.h / d.w;
+    var w = Math.max(b[2] - b[0] + 2 * pad, minW || 0), h = b[3] - b[1] + 2 * pad;
+    if (h / w > a) w = h / a;
+    return clamp({ x: (b[0] + b[2]) / 2 - w / 2, y: (b[1] + b[3]) / 2 - w * a / 2, w: w, h: w * a });
+  }
+  function go(target, instant) {
+    if (anim) { cancelAnimationFrame(anim); anim = null; }
+    if (instant || reduce) { vb = target; apply(); return; }
+    var from = vb, t0 = performance.now(), D = 520;
+    function step(now) {
+      var t = Math.min(1, (now - t0) / D), e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      vb = { x: from.x + (target.x - from.x) * e, y: from.y + (target.y - from.y) * e, w: from.w + (target.w - from.w) * e, h: from.h + (target.h - from.h) * e };
+      apply();
+      anim = t < 1 ? requestAnimationFrame(step) : null;
+    }
+    anim = requestAnimationFrame(step);
+  }
+
+  /* --- Toestand --- */
+  var cur = "week", focusI = -1;
+  function viewFor() {
+    if (focusI === "H") { var hp = P(HOTEL); return fit([hp[0], hp[1] + 10, hp[0], hp[1] + 10], 0, 300); }
+    if (cur === "week") return fit([0, 0, W, H], 8, 0);
+    if (focusI >= 0) { var p = stopRecs[cur][focusI].p; return fit([p[0], p[1] + 10, p[0], p[1] + 10], 0, 300); }
+    return fit(dayBox[cur], 55, 260);
+  }
+  var chipBox = document.getElementById("mapchips");
+  function chip(id, label, col) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip"; b.setAttribute("data-day", id); b.setAttribute("aria-pressed", "false");
+    if (col) { b.style.setProperty("--c", "var(" + col + ")"); var dot = document.createElement("span"); dot.className = "dot"; b.appendChild(dot); }
+    b.appendChild(document.createTextNode(label));
+    b.addEventListener("click", function () { select(id); });
+    chipBox.appendChild(b);
+  }
+  chip("week", "Hele week");
+  ORDER.forEach(function (id) { chip(id, DAYINFO[id].ab + " " + DAYINFO[id].n, COLORS[id]); });
+
+  var legend = document.getElementById("maplegend");
+  function renderLegend() {
+    legend.textContent = "";
+    if (cur === "week") {
+      var grid = document.createElement("div"); grid.className = "wk-grid";
+      ORDER.forEach(function (id) {
+        var d = DAYINFO[id], b = document.createElement("button");
+        b.type = "button"; b.style.setProperty("--c", "var(" + COLORS[id] + ")");
+        var dot = document.createElement("span"); dot.className = "dot";
+        var wd = document.createElement("span"); wd.className = "wd"; var ns = ROUTES[id].stops.length; wd.textContent = d.it + " " + d.n + " · " + ns + (ns === 1 ? " stop" : " stops");
+        var wt = document.createElement("span"); wt.className = "wt"; wt.textContent = d.theme;
+        b.appendChild(dot); b.appendChild(wd); b.appendChild(wt);
+        b.addEventListener("click", function () { select(id); });
+        grid.appendChild(b);
+      });
+      legend.appendChild(grid);
+      return;
+    }
+    var d = DAYINFO[cur], R = ROUTES[cur];
+    var head = document.createElement("div"); head.className = "ml-head"; head.style.setProperty("--c", "var(" + COLORS[cur] + ")");
+    var ttl = document.createElement("div"); ttl.className = "ml-title";
+    var dot = document.createElement("span"); dot.className = "dot"; ttl.appendChild(dot);
+    ttl.appendChild(document.createTextNode(d.ab + " " + d.n + " · " + d.theme));
+    var lk = document.createElement("a"); lk.href = "#" + cur; lk.textContent = "Uurschema van deze dag ↓";
+    head.appendChild(ttl); head.appendChild(lk); legend.appendChild(head);
+    var ol = document.createElement("ol"); ol.className = "ml-list"; ol.style.setProperty("--c", "var(" + COLORS[cur] + ")");
+    function legRow(L, label) {
+      var li = document.createElement("li"), b = document.createElement("button");
+      b.type = "button"; if (focusI === "H") b.className = "on";
+      var num = document.createElement("span"); num.className = "num hz"; num.textContent = "H";
+      var tm = document.createElement("span"); tm.className = "ml-time"; tm.textContent = L.t;
+      var nm = document.createElement("span"); nm.textContent = label;
+      var sub = document.createElement("span"); sub.className = "ml-sub"; sub.textContent = L.txt; nm.appendChild(sub);
+      b.appendChild(num); b.appendChild(tm); b.appendChild(nm);
+      b.addEventListener("click", function () { focus(focusI === "H" ? -1 : "H"); });
+      li.appendChild(b); ol.appendChild(li);
+    }
+    if (R.start) legRow(R.start, "Vertrek vanaf Domus Fornaci");
+    R.stops.forEach(function (s, i) {
+      var li = document.createElement("li"), b = document.createElement("button");
+      b.type = "button"; if (i === focusI) b.className = "on";
+      var num = document.createElement("span"); num.className = "num" + (s.opt ? " opt" : ""); num.textContent = String(i + 1);
+      var tm = document.createElement("span"); tm.className = "ml-time"; tm.textContent = s.t;
+      var nm = document.createElement("span"); nm.textContent = s.n + (s.opt ? " (optioneel)" : "");
+      if (s.m) { var sub = document.createElement("span"); sub.className = "ml-sub"; sub.textContent = MODE_TXT[s.m]; nm.appendChild(sub); }
+      b.appendChild(num); b.appendChild(tm); b.appendChild(nm);
+      b.addEventListener("click", function () { focus(i === focusI ? -1 : i); });
+      li.appendChild(b); ol.appendChild(li);
+    });
+    if (R.end) legRow(R.end, "Terug naar Domus Fornaci");
+    legend.appendChild(ol);
+  }
+  function showCallout() {
+    if (focusI === -1 || (cur === "week" && focusI !== "H")) { call.outer.setAttribute("display", "none"); return; }
+    var s, r;
+    if (focusI === "H") { s = { t: "Hotel", n: "Domus Fornaci, Via delle Fornaci 38" }; r = { p: P(HOTEL), dx: 0, dy: 0 }; }
+    else { s = ROUTES[cur].stops[focusI]; r = stopRecs[cur][focusI]; }
+    call.outer.setAttribute("transform", "translate(" + fx(r.p) + ")");
+    call.outer.setAttribute("style", "--c:" + (focusI === "H" ? "var(--m-hotel)" : "var(" + COLORS[cur] + ")"));
+    cText.textContent = "";
+    var ts = document.createElementNS(NS, "tspan"); ts.setAttribute("class", "ct"); ts.textContent = s.t + "  ";
+    cText.appendChild(ts); cText.appendChild(document.createTextNode(s.n));
+    var w = Math.round((s.t.length + 2) * 7.3 + s.n.length * 6.9 + 22);
+    cRect.setAttribute("x", String(r.dx - w / 2)); cRect.setAttribute("y", String(r.dy + 16)); cRect.setAttribute("width", String(w));
+    cText.setAttribute("x", String(r.dx)); cText.setAttribute("y", String(r.dy + 32));
+    call.outer.removeAttribute("display");
+  }
+  function markStops() {
+    if (cur === "week") return;
+    stopRecs[cur].forEach(function (r, i) {
+      r.rec.b = i === focusI ? 1.25 : 1;
+      r.outer.setAttribute("class", "stop" + (ROUTES[cur].stops[i].opt ? " opt" : "") + (i === focusI ? " on" : ""));
+    });
+  }
+  function select(id, instant) {
+    if (cur !== "week") stopRecs[cur].forEach(function (r) { r.rec.b = 1; });
+    cur = id; focusI = -1;
+    gWeek.setAttribute("display", id === "week" ? "inline" : "none");
+    gWeekTop.setAttribute("display", id === "week" ? "inline" : "none");
+    if (id === "week") { htx.setAttribute("x", "-10"); htx.setAttribute("style", "text-anchor:end"); }
+    else { htx.setAttribute("x", "10"); htx.setAttribute("style", "text-anchor:start"); }
+    ORDER.forEach(function (k) { dayLayers[k].forEach(function (g) { g.setAttribute("display", k === id ? "inline" : "none"); }); });
+    Array.prototype.forEach.call(chipBox.children, function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-day") === id ? "true" : "false"); });
+    var on = chipBox.querySelector('[aria-pressed="true"]');
+    if (on && on.scrollIntoView) { try { chipBox.scrollTo({ left: on.offsetLeft - chipBox.clientWidth / 2 + on.clientWidth / 2, behavior: instant ? "auto" : "smooth" }); } catch (e) {} }
+    markStops(); showCallout(); renderLegend();
+    go(viewFor(), instant);
+  }
+  function focus(i) {
+    focusI = i; markStops(); showCallout(); renderLegend();
+    go(viewFor());
+  }
+
+  /* --- Interactie op de kaart --- */
+  var ptrs = {}, nPtr = 0, drag = null;
+  function rect() { return svg.getBoundingClientRect(); }
+  function zoomAt(sx, sy, factor) {
+    var r = rect(), upx = vb.w / r.width;
+    var mx = vb.x + (sx - r.left) * upx, my = vb.y + (sy - r.top) * upx;
+    var nw = vb.w * factor, t = clamp({ x: 0, y: 0, w: nw, h: nw }); nw = t.w;
+    var npx = nw / r.width;
+    vb = clamp({ x: mx - (sx - r.left) * npx, y: my - (sy - r.top) * npx, w: nw, h: t.h });
+    apply();
+  }
+  svg.addEventListener("pointerdown", function (e) {
+    if (anim) { cancelAnimationFrame(anim); anim = null; }
+    ptrs[e.pointerId] = { x: e.clientX, y: e.clientY }; nPtr++;
+    if (nPtr === 1) drag = { moved: false, sx: e.clientX, sy: e.clientY };
+    else if (drag) drag.moved = true;
+  });
+  svg.addEventListener("pointermove", function (e) {
+    var prev = ptrs[e.pointerId]; if (!prev || !drag) return;
+    var now = { x: e.clientX, y: e.clientY };
+    if (nPtr === 1) {
+      if (!drag.moved) {
+        if (Math.abs(now.x - drag.sx) + Math.abs(now.y - drag.sy) < 7) return;
+        drag.moved = true; frame.classList.add("dragging");
+        try { svg.setPointerCapture(e.pointerId); } catch (err) {}
+      }
+      var upx = vb.w / rect().width;
+      vb = clamp({ x: vb.x - (now.x - prev.x) * upx, y: vb.y - (now.y - prev.y) * upx, w: vb.w, h: vb.h });
+      apply();
+    } else if (nPtr === 2) {
+      var other = null;
+      for (var k in ptrs) if (String(k) !== String(e.pointerId)) other = ptrs[k];
+      if (other) {
+        var d0 = Math.hypot(prev.x - other.x, prev.y - other.y), d1 = Math.hypot(now.x - other.x, now.y - other.y);
+        if (d0 > 0 && d1 > 0) zoomAt((now.x + other.x) / 2, (now.y + other.y) / 2, d0 / d1);
+      }
+    }
+    ptrs[e.pointerId] = now;
+  });
+  function up(e) {
+    if (ptrs[e.pointerId]) { delete ptrs[e.pointerId]; nPtr = Math.max(0, nPtr - 1); }
+    if (nPtr === 0) frame.classList.remove("dragging");
+  }
+  svg.addEventListener("pointerup", up);
+  svg.addEventListener("pointercancel", up);
+  svg.addEventListener("wheel", function (e) {
+    if (!e.ctrlKey) return;
+    e.preventDefault(); zoomAt(e.clientX, e.clientY, Math.exp(e.deltaY * 0.01));
+  }, { passive: false });
+  svg.addEventListener("click", function (e) {
+    if (drag && drag.moved) return;
+    var ho = e.target.closest && e.target.closest(".hotel");
+    if (ho) { focus(focusI === "H" ? -1 : "H"); return; }
+    var st = e.target.closest && e.target.closest(".stop");
+    if (st) { var i = +st.getAttribute("data-i"); focus(i === focusI ? -1 : i); return; }
+    var wk = e.target.closest && e.target.closest(".wk");
+    if (wk) select(wk.getAttribute("data-day"));
+  });
+  function zoomBtn(f) { var r = rect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, f); }
+  document.getElementById("zin").addEventListener("click", function () { zoomBtn(0.66); });
+  document.getElementById("zout").addEventListener("click", function () { zoomBtn(1.5); });
+  document.getElementById("zfit").addEventListener("click", function () { if (focusI !== -1) focus(-1); else go(viewFor()); });
+  document.addEventListener("click", function (e) {
+    var a = e.target.closest && e.target.closest("[data-mapday]");
+    if (a) select(a.getAttribute("data-mapday"));
+  });
+
+  var lastW = 0, lastH = 0;
+  function onResize() {
+    var d = dims();
+    if (Math.abs(d.w - lastW) < 2 && Math.abs(d.h - lastH) < 2) return;
+    lastW = d.w; lastH = d.h; go(viewFor(), true);
+  }
+  if (window.ResizeObserver) new ResizeObserver(onResize).observe(frame); else window.addEventListener("resize", onResize);
+  select("week", true);
+  var dd = dims(); lastW = dd.w; lastH = dd.h;
+})();
 </script>
 
 </body></html>
