@@ -370,7 +370,7 @@ var DAYS = [
     hl: "Aankomst · Sint-Pietersplein bij avond · Ponte Sant'Angelo · Navona · Trevi bij nacht", fix: [],
     notes: ["Inchecken bij de Domus Fornaci kan vanaf 16:00", "Laat geland? Sla de wandeling over en ga direct voor diner en Trevi."],
     items: [
-      { t: "Middag", title: "Aankomst en inchecken", text: "Vanaf Fiumicino met de taxi naar de Domus Fornaci, Via delle Fornaci 38: vast tarief €55 voor het centrum en het Vaticaan, ±45 minuten. Noem het vaste tarief bij het instappen. Met de trein: FL1 naar Roma Trastevere (€8), daar overstappen op de FL3 of FL5 naar Roma San Pietro, en dan een paar minuten lopen.", tags: [["ticket", "taxi €55 vast"]] },
+      { t: "Middag", title: "Aankomst en inchecken", text: "Trein: één kaartje Fiumicino Aeroporto → Roma San Pietro (€8 p.p.), FL1 met één overstap op Roma Trastevere, ±35–50 minuten. Daarna een paar minuten lopen naar de Domus Fornaci. Taxi: het vaste tarief van €55 geldt alleen binnen de Aureliaanse muren en het hotel ligt daar net buiten, dus de meter loopt (volgens de luchthaven maximaal €80). Neem alleen een witte taxi bij de officiële standplaats.", tags: [["ticket", "trein €8 p.p."], ["ticket", "taxi max. €80"]] },
       { t: "17:30", title: "Sint-Pietersplein bij avond", text: "Een paar minuten lopen van het hotel. Bernini's zuilengalerij in het avondlicht, zonder de drukte van overdag.", map: "Piazza San Pietro" },
       { t: "18:00", title: "Via della Conciliazione & Ponte Sant'Angelo", text: "Over de lange laan naar de Tiber en over de brug met de engelen van Bernini, terwijl de zon ondergaat (18:38).", map: "Ponte Sant'Angelo" },
       { t: "18:30", title: "Piazza Navona", text: "Via Via dei Coronari naar Bernini's Vierstromenfontein en de gevel van Sant'Agnese in Agone.", map: "Piazza Navona" },
@@ -470,7 +470,7 @@ var DAYS = [
     notes: ["Uitchecken bij de Domus Fornaci kan tot 11:00"],
     items: [
       { t: "Ochtend", title: "Uitchecken en laatste rondje", text: "Uitchecken vóór 11:00 en vragen of jullie bagage bij de receptie kan blijven. Daarna naar de markt op Campo de' Fiori (25 minuten lopen of bus 64) of nog één keer naar het Sint-Pietersplein. Laatste gelato.", map: "Campo de' Fiori" },
-      { t: "Vertrek", title: "Naar Fiumicino", text: "Bagage ophalen en met de taxi naar het vliegveld: vast tarief €55, ±45 minuten. Met de trein: FL3 of FL5 van Roma San Pietro naar Roma Trastevere en daar de FL1 naar Fiumicino (€8). Plan ruim: op zaterdag zijn trein en security vaak druk.", tags: [["ticket", "taxi €55 vast"]] }
+      { t: "Vertrek", title: "Naar Fiumicino", text: "Trein vanaf Roma San Pietro, op loopafstand van het hotel: één kaartje naar Fiumicino Aeroporto (€8 p.p.), met één overstap op Roma Trastevere. Of laat de receptie een taxi bellen; de meter loopt (maximaal €80). Plan ruim: op zaterdag zijn trein en security vaak druk.", tags: [["ticket", "trein €8 p.p."]] }
     ] }
 ];
 
@@ -509,7 +509,8 @@ var SOURCES = [
   ["Openbaar vervoer Rome 2026 (The Better Vacation)", "https://www.thebettervacation.com/nl/Rome/zich-verplaatsen-in-Rome/"],
   ["Domus Fornaci: adres en in- en uitchecktijden (Rumbo)", "https://www.rumbo.es/hoteles/italia/roma/sonder-piazza-san-pietro_hid-5513969"],
   ["Via delle Fornaci: bus 64 en loopafstand Vaticaan (Fornaci Guest House)", "https://www.bed-and-breakfast.it/en/amp/latium/fornaci-guest-house-roma/65067"],
-  ["Taxi vast tarief en FL1-trein vanaf Fiumicino (Untold Italy)", "https://untolditaly.com/rome-airport-transfers/"]
+  ["Taxitarieven Fiumicino en officiële taxi's (Aeroporti di Roma)", "https://www.adr.it/pax-fco-taxi"],
+  ["Trein Fiumicino Aeroporto – Roma San Pietro (Omio)", "https://www.omio.it/treni/fiumicino-aeroporto/roma-san-pietro-ezhju"]
 ];
 
 function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -978,7 +979,7 @@ SOURCES.forEach(function (x) { var li = el("li"), a = el("a", null, x[0]); a.hre
     ]},
     za17: { badge: 0, fitHotel: true,
       start: { t: "Ochtend", txt: "Uitchecken vóór 11:00, dan 25 minuten lopen of bus 64", parts: [{ m: "walk", pts: [HOTEL, [41.9003,12.4568], [41.9010,12.4600], [41.9005,12.4652], [41.8988,12.4688], [41.8970,12.4712], [41.8957,12.4722]] }] },
-      end: { t: "Middag", txt: "Bagage ophalen, dan taxi (vast tarief €55) of trein naar Fiumicino", parts: [{ m: "ov", pts: [[41.8957,12.4722], [41.8975,12.4725]].concat(b64(5, 0).slice(1)) }] },
+      end: { t: "Middag", txt: "Bagage ophalen, dan trein vanaf Roma San Pietro (€8 p.p.) of taxi naar Fiumicino", parts: [{ m: "ov", pts: [[41.8957,12.4722], [41.8975,12.4725]].concat(b64(5, 0).slice(1)) }] },
       stops: [
       { ll: [41.8957,12.4722], t: "Ochtend", n: "Markt op Campo de' Fiori" }
     ]}
