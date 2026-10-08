@@ -294,7 +294,7 @@ footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule);
     <div class="eyebrow">Roma · 10–16 ottobre 2026</div>
     <h1>Rome, <em>vijf hele dagen</em></h1>
     <p class="lead">Per dag één deel van de stad, afgestemd op de sluitingsdagen en openingstijden van oktober 2026. Vaste tijdsloten staan in rood; alles in oker is optioneel.</p>
-    <p class="assume">Hotel: Domus Fornaci, Via delle Fornaci 38, op loopafstand van het Sint-Pietersplein. Aankomst zaterdagmiddag 10 oktober, vertrek vrijdag 16 oktober. Colosseum geboekt op donderdag 15 oktober om 11:00. Bijgewerkt op 8 oktober 2026.</p>
+    <p class="assume">Hotel: Domus Fornaci, Via delle Fornaci 38, op loopafstand van het Sint-Pietersplein. Aankomst zaterdagmiddag 10 oktober, terugvlucht vrijdag 16 oktober om 10:35. Colosseum geboekt op donderdag 15 oktober om 11:00. Bijgewerkt op 8 oktober 2026.</p>
   </header>
 </div>
 
@@ -441,7 +441,7 @@ var DAYS = [
     ] },
   { id: "do15", ab: "Do", n: "15", it: "giovedì", theme: "Antiek Rome", area: "S. Maria Maggiore · Colosseum · Forum · Palatijn · Capitool", sun: "18:29",
     hl: "Santa Maria Maggiore · Colosseum 11:00 · Forum · Palatijn · zonsondergang boven het Forum", fix: [["book", "Colosseum 11:00 (geboekt)"], ["opt", "Falstaff 18:00"]],
-    notes: ["Colosseum-tickets staan op naam: paspoort of ID mee", "Wees ±20 minuten voor 11:00 bij de ingang voor de beveiliging"],
+    notes: ["Colosseum-tickets staan op naam: paspoort of ID mee", "Wees ±20 minuten voor 11:00 bij de ingang voor de beveiliging", "Laatste avond: morgen om 07:15 vertrek. Reken vanavond af bij de receptie en bestel daar de taxi"],
     items: [
       { t: "08:15", title: "Naar Santa Maria Maggiore", text: "Bus 64 naar Termini (±30 min), dan 5 minuten lopen." },
       { t: "09:00", title: "Santa Maria Maggiore", text: "Een van de vier pauselijke basilieken, met mozaïeken uit de 5e eeuw. De basiliek is gratis; de museumruimtes met de Loggia en het sneeuwmozaïek kosten €7,50 met een tijdslot.", map: "Basilica di Santa Maria Maggiore", tags: [["opt", "museum €7,50"]] },
@@ -452,14 +452,16 @@ var DAYS = [
       { t: "15:15", title: "Palatijn", text: "De keizerspaleizen, de Domus Tiberiana en vanaf de Farnesiaanse tuinen het uitzicht over het Forum.", map: "Palatino" },
       { t: "16:30", opt: true, title: "Capitolijnse Musea", text: "Het originele ruiterstandbeeld van Marcus Aurelius, de Capitolijnse wolvin en de Stervende Galliër. Dagelijks open tot 19:30 (laatste toegang 18:30).", map: "Musei Capitolini", tags: [["opt", "optie"]] },
       { t: "18:00", title: "Zonsondergang boven het Forum", text: "Het gratis uitkijkpunt aan de achterkant van het Capitool kijkt recht over het Forum. Zon onder om 18:29. Liever opera? Falstaff begint om 18:00 in het Teatro dell'Opera, 15 minuten lopen.", map: "Terrazza sul Foro Romano, Campidoglio", tags: [["free", "gratis"]] },
-      { t: "20:00", title: "Afscheidsdiner in Monti", text: "Bus 64 vanaf Via Nazionale rijdt daarna rechtstreeks terug naar het hotel." }
+      { t: "20:00", title: "Afscheidsdiner in Monti", text: "Bus 64 vanaf Via Nazionale rijdt daarna rechtstreeks terug naar het hotel. Niet te laat: morgen gaat de wekker vroeg." }
     ] },
-  { id: "vr16", ab: "Vr", n: "16", it: "venerdì", theme: "Vertrek", area: "Hotel · Sint-Pietersplein · Fiumicino", sun: "18:28",
-    hl: "Uitchecken · laatste rondje · naar Fiumicino", fix: [],
-    notes: ["Uitchecken bij de Domus Fornaci kan tot 11:00", "Vrijdag is een geliefde stakingsdag in het Italiaanse OV. Kijk de dag ervoor op scioperi.mit.gov.it en neem bij twijfel een taxi"],
+  { id: "vr16", ab: "Vr", n: "16", it: "venerdì", theme: "Vertrek", area: "Hotel · Fiumicino · vlucht 10:35", sun: "18:28",
+    hl: "Vroeg uitchecken · taxi of trein naar Fiumicino · vlucht 10:35", fix: [["book", "vlucht 10:35"]],
+    notes: ["Reken donderdagavond al af en vraag de receptie om voor 07:15 een taxi te bestellen", "Ontbijt is er waarschijnlijk nog niet zo vroeg: vraag om een ontbijtpakket of eet op het vliegveld", "Vrijdag is een geliefde stakingsdag in het Italiaanse OV. Kijk donderdag op scioperi.mit.gov.it; bij een staking is de taxi de veilige keuze"],
     items: [
-      { t: "Ochtend", title: "Uitchecken en laatste rondje", text: "Uitchecken vóór 11:00 en vragen of jullie bagage bij de receptie kan blijven. Afhankelijk van de vlucht: nog één keer het Sint-Pietersplein, een cappuccino in Borgo of de markt op Campo de' Fiori (25 minuten lopen of bus 64). Laatste gelato.", map: "Piazza San Pietro" },
-      { t: "Vertrek", title: "Naar Fiumicino", text: "Trein vanaf Roma San Pietro, op loopafstand van het hotel: één kaartje naar Fiumicino Aeroporto (€8 p.p.), met één overstap op Roma Trastevere. Of laat de receptie een taxi bellen; de meter loopt (maximaal €80). Reken ±1 uur reistijd en wees 2 uur voor vertrek op het vliegveld.", tags: [["ticket", "trein €8 p.p."]] }
+      { t: "06:30", title: "Opstaan en inpakken", text: "Laatste blik vanaf het hotel; het Sint-Pietersplein ligt om de hoek als jullie nog vijf minuten hebben." },
+      { t: "07:15", title: "Naar Fiumicino", text: "Taxi vanaf het hotel, ±35–45 minuten. De meter loopt, maximaal €80. Goedkoper: de trein vanaf Roma San Pietro (€8 p.p.), met één overstap op Roma Trastevere op de FL1, ±35–50 minuten plus het stukje lopen met koffers.", tags: [["ticket", "taxi max. €80"], ["ticket", "trein €8 p.p."]] },
+      { t: "±08:15", title: "Op het vliegveld", text: "Ruim 2 uur voor vertrek: tijd voor bagage, security en een cappuccino aan de gate." },
+      { t: "10:35", title: "Vlucht naar huis", text: "Arrivederci, Roma." }
     ] }
 ];
 
@@ -966,10 +968,10 @@ SOURCES.forEach(function (x) { var li = el("li"), a = el("a", null, x[0]); a.hre
       { ll: [41.8962,12.4948], t: "20:00", n: "Afscheidsdiner in Monti", via: [[41.8940,12.4868],[41.8952,12.4905]] }
     ]},
     vr16: { badge: 0, fitHotel: true,
-      start: { t: "Ochtend", txt: "Uitchecken vóór 11:00, dan een paar minuten lopen", parts: [{ m: "walk", pts: [HOTEL, [41.9003,12.4568], [41.9015,12.4580], [41.9022,12.4575]] }] },
-      end: { t: "Vertrek", txt: "Bagage ophalen, dan trein vanaf Roma San Pietro (€8 p.p.) of taxi naar Fiumicino", parts: [{ m: "walk", pts: [[41.9022,12.4575], [41.9010,12.4572], [41.9003,12.4568], HOTEL] }, { m: "walk", pts: [HOTEL, STN_SP] }] },
+      start: { t: "07:15", txt: "Taxi bestellen via de receptie, of een paar minuten lopen naar station Roma San Pietro", parts: [{ m: "walk", pts: [HOTEL, STN_SP] }] },
+      end: { t: "10:35", label: "Naar Fiumicino", txt: "Vlucht om 10:35; wees ±08:15 op het vliegveld", parts: [{ m: "ov", pts: [STN_SP, [41.8810,12.4615], STN_TR] }] },
       stops: [
-      { ll: [41.9022,12.4575], t: "Ochtend", n: "Laatste rondje: Sint-Pietersplein" }
+      { ll: STN_SP, t: "07:15", n: "Station Roma San Pietro (trein naar Fiumicino), of taxi vanaf het hotel" }
     ]}
   };
   var MODE_TXT = { ov: "met metro, bus of taxi", fiets: "op de fiets" };
@@ -1303,7 +1305,7 @@ SOURCES.forEach(function (x) { var li = el("li"), a = el("a", null, x[0]); a.hre
       b.addEventListener("click", function () { focus(i === focusI ? -1 : i); });
       li.appendChild(b); ol.appendChild(li);
     });
-    if (R.end) legRow(R.end, "Terug naar Domus Fornaci");
+    if (R.end) legRow(R.end, R.end.label || "Terug naar Domus Fornaci");
     legend.appendChild(ol);
   }
   function showCallout() {
